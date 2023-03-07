@@ -1,4 +1,4 @@
-# Muehel
+# Muehle
 
 It's a game that is pretty simple so everyone can enjoy it
 
