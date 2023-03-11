@@ -1,4 +1,4 @@
-package at.htleonding.muehle.muehle;
+package at.htleonding.muehle;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
