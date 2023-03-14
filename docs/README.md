@@ -1,5 +1,5 @@
 # Mühle
-Es ist ein Spiel, das ziemlich einfach ist, sodass jeder es genießen kann.
+Es ist ein Spiel, das ziemlich einfach ist, sodass jeder es genießen kann!
 
 ## Spielbrett
 <img src="/docs/muehle-board.png"/>
