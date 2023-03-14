@@ -9,6 +9,7 @@ Es wird immer 1 gegen 1 gespielt.
 
 ## Spielfiguren
 Beide Spieler besitzen zu Beginn 9 Spielsteine, die durch 2 unterschiedliche Farben voneinander zu unterscheiden sind.
+
 <img src="/docs/spielsteine_muehle.png"/>
 
 ## Ziel des Spiels
