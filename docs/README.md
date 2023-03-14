@@ -2,13 +2,14 @@
 Es ist ein Spiel, das ziemlich einfach ist, sodass jeder es genießen kann.
 
 ## Spielbrett
-<img src="/docs/muehle-board.png" />
+<img src="/docs/muehle-board.png"/>
 
 ## Anzahl der Spieler
 Es wird immer 1 gegen 1 gespielt.
 
 ## Spielfiguren
 Beide Spieler besitzen zu Beginn 9 Spielsteine, die durch 2 unterschiedliche Farben voneinander zu unterscheiden sind.
+<img src="/docs/spielsteine_muehle.png"/>
 
 ## Ziel des Spiels
 Ziel des Spiels ist es, so viele Mühlen wie möglich zu schließen und damit Spielsteine des Gegners vom Brett nehmen zu können, bis dieser nur noch 2 Spielsteine übrig hat. Eine Mühle bedeutet, dass 3 Steine in einer Reihe liegen.
