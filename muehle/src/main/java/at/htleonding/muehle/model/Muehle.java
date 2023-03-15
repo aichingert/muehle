@@ -9,13 +9,13 @@ public class Muehle {
         board = new int[BOARD_SIZE][BOARD_SIZE][BOARD_SIZE];
     }
 
-    public boolean movePiece(MoveType action, int color, int x, int y, int z) {
+    public boolean movePiece(MoveType action, int color, Position position) {
         if (action == MoveType.START_PHASE) {
-            if (board[z][y][x] != 0) {
+            if (board[position.getZ()][position.getY()][position.getX()] != 0) {
                 return false;
             }
 
-            board[z][y][x] = color;
+            board[position.getZ()][position.getY()][position.getX()] = color;
             return true;
         }
 

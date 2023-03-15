@@ -40,4 +40,13 @@ public class Position {
 
         return new Position(this.x + other.x, this.y + other.y, this.z + other.z);
     }
+
+    @Override
+    public String toString() {
+        return "Position{" +
+                "x=" + x +
+                ", y=" + y +
+                ", z=" + z +
+                '}';
+    }
 }
