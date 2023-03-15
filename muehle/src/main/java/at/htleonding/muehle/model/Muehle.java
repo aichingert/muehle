@@ -1,20 +1,21 @@
 package at.htleonding.muehle.model;
 
 public class Muehle {
-    private final int[][] board;
-    private final int MAX_PIECES = 9;
+    public final int MAX_PIECES = 9;
+    public final int BOARD_SIZE = 3;
+    private final int[][][] board;
 
     public Muehle() {
-        board = new int[3][3];
+        board = new int[BOARD_SIZE][BOARD_SIZE][BOARD_SIZE];
     }
 
-    public boolean movePiece(MoveType action, int color, int x, int y) {
+    public boolean movePiece(MoveType action, int color, int x, int y, int z) {
         if (action == MoveType.START_PHASE) {
-            if (board[y][x] != 0) {
+            if (board[z][y][x] != 0) {
                 return false;
             }
 
-            board[y][x] = color;
+            board[z][y][x] = color;
             return true;
         }
 
@@ -22,6 +23,6 @@ public class Muehle {
     }
 
     public int getValueAt(Position position) {
-        return this.board[position.getY()][position.getX()];
+        return this.board[position.getZ()][position.getY()][position.getX()];
     }
 }
