@@ -5,4 +5,6 @@ module at.htleonding.muehle {
                             
     opens at.htleonding.muehle to javafx.fxml;
     exports at.htleonding.muehle;
+    exports at.htleonding.muehle.controller;
+    opens at.htleonding.muehle.controller to javafx.fxml;
 }

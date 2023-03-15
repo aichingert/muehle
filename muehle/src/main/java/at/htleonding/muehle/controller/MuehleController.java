@@ -1,4 +1,4 @@
-package at.htleonding.muehle;
+package at.htleonding.muehle.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

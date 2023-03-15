@@ -11,11 +11,9 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class App extends Application {
-    private static Scene scene;
-
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("muehle"), 640, 480);
+        Scene scene = new Scene(loadFXML("muehle"), 640, 480);
         stage.setScene(scene);
         stage.setTitle("Muehle");
         stage.getIcons().add(loadIcon("icon"));
