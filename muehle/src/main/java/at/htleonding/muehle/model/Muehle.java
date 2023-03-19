@@ -10,13 +10,17 @@ public class Muehle {
     }
 
     public boolean movePiece(MoveType action, int color, Position position) {
-        if (action == MoveType.START_PHASE) {
-            if (board[position.getZ()][position.getY()][position.getX()] != 0) {
-                return false;
-            }
+        if (board[position.getZ()][position.getY()][position.getX()] != 0 || !Logic.isAbleToSwitchDimensions(position)) {
+            return false;
+        }
 
+        if (action == MoveType.START_PHASE) {
             board[position.getZ()][position.getY()][position.getX()] = color;
             return true;
+        }
+
+        if (action == MoveType.UP) {
+            //todo
         }
 
         return true;

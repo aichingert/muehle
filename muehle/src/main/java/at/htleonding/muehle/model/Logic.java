@@ -17,7 +17,8 @@ public class Logic {
             new Position(0,1,0),
             new Position(0,-1,0),
             new Position(-1,0,0),
-            new Position(1,0,0)};
+            new Position(1,0,0)
+    };
 
     /**
      * Check if jump to another board is possible from the current position
@@ -25,7 +26,7 @@ public class Logic {
      * @param position  the position where we want to know if we can switch boards
      * @return if it is possible
      */
-    private static boolean isAbleToSwitchDimensions(Position position) {
+    public static boolean isAbleToSwitchDimensions(Position position) {
         return position.getY() == 1 && position.getX() != 1 || position.getY() != 1 && position.getX() == 1;
     }
 
