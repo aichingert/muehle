@@ -72,15 +72,14 @@ public class Logic {
      * @param game      the current game
      * @param from      the position where we currently are
      * @param to        the position where we would be
-     * @return the amount of muehlen it activates
+     * @return true if the move activates a muehle
      */
-    public static int activatesMuehle(Muehle game, Position from, Position to) {
-        int amountOfActivations = 0;
+    public static boolean activatesMuehle(Muehle game, Position from, Position to) {
         int color = game.getValueAt(from);
         boolean[] doesActivate = {true,true,true};
 
         if (game.getValueAt(from) == 0 || !Logic.getMoves(game, from).contains(to)) {
-            return amountOfActivations;
+            return false;
         }
 
         // If we are able to switch the dimension then check if we get a muehle there
@@ -103,11 +102,6 @@ public class Logic {
             }
         }
 
-        for (boolean activates : doesActivate) {
-            if (activates)
-                amountOfActivations++;
-        }
-
-        return amountOfActivations;
+        return doesActivate[0] || doesActivate[1] || doesActivate[2];
     }
 }
