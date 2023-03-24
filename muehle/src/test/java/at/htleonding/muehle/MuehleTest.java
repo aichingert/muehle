@@ -9,9 +9,9 @@ public class MuehleTest {
     @Test
     void setPiecesTest() {
         // arrange
+        Muehle muehle = new Muehle();
 
         // act
-        Muehle muehle = new Muehle();
         muehle.movePiece(MoveType.START_PHASE, 1, new Position(0, 0, 0));
         muehle.movePiece(MoveType.START_PHASE, 2, new Position(1, 0, 0));
         muehle.movePiece(MoveType.START_PHASE, 2, new Position(0, 0, 0));
@@ -24,9 +24,9 @@ public class MuehleTest {
     @Test
     void illegalMovesTest() {
         // arrange
+        Muehle muehle = new Muehle();
 
         // act
-        Muehle muehle = new Muehle();
         boolean isMoveOk = muehle.movePiece(MoveType.START_PHASE, 1, new Position(1, 1, 0));
 
         // assert
@@ -36,9 +36,9 @@ public class MuehleTest {
     @Test
     void upMovesTest() {
         // arrange
+        Muehle muehle = new Muehle();
 
         // act
-        Muehle muehle = new Muehle();
         //todo
 
         // assert
@@ -48,9 +48,9 @@ public class MuehleTest {
     @Test
     void downMovesTest() {
         // arrange
+        Muehle muehle = new Muehle();
 
         // act
-        Muehle muehle = new Muehle();
         //todo
 
         // assert
@@ -60,9 +60,9 @@ public class MuehleTest {
     @Test
     void leftMovesTest() {
         // arrange
+        Muehle muehle = new Muehle();
 
         // act
-        Muehle muehle = new Muehle();
         //todo
 
         // assert
@@ -72,9 +72,9 @@ public class MuehleTest {
     @Test
     void rightMovesTest() {
         // arrange
+        Muehle muehle = new Muehle();
 
         // act
-        Muehle muehle = new Muehle();
         //todo
 
         // assert

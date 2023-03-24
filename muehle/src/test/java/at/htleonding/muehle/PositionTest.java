@@ -7,9 +7,9 @@ public class PositionTest {
     @Test
     void positionTest() {
         // arrange
+        Position position = new Position(0, 2, 1);
 
         // act
-        Position position = new Position(0, 2, 1);
 
         // assert
         assertThat(position.getX()).isEqualTo(0);
