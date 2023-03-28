@@ -1,15 +1,17 @@
 package at.htleonding.muehle;
+import at.htleonding.muehle.model.Player;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class PlayerTest {
     @Test
-    void test() {
+    void declarePlayer() {
         // arrange
+        Player player = new Player("Tobias Aichinger");
 
         // act
 
         // assert
-        assertThat((1+1)).isEqualTo(2);
+        assertThat(player.getName()).isEqualTo("Tobias Aichinger");
     }
 }
