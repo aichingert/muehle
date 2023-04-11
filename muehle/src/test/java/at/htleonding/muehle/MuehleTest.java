@@ -1,5 +1,4 @@
 package at.htleonding.muehle;
-import at.htleonding.muehle.model.MoveType;
 import at.htleonding.muehle.model.Muehle;
 import at.htleonding.muehle.model.Position;
 import org.junit.jupiter.api.Test;
