@@ -11,9 +11,9 @@ public class MuehleTest {
         Muehle muehle = new Muehle();
 
         // act
-        muehle.movePiece(MoveType.START_PHASE, 1, new Position(0, 0, 0));
-        muehle.movePiece(MoveType.START_PHASE, 2, new Position(1, 0, 0));
-        muehle.movePiece(MoveType.START_PHASE, 2, new Position(0, 0, 0));
+        muehle.setPiece(1, new Position(0, 0, 0));
+        muehle.setPiece( 2, new Position(1, 0, 0));
+        muehle.setPiece( 2, new Position(0, 0, 0));
 
         // assert
         assertThat(muehle.getValueAt(new Position(0, 0, 0))).isEqualTo(1);
@@ -26,7 +26,7 @@ public class MuehleTest {
         Muehle muehle = new Muehle();
 
         // act
-        boolean isMoveOk = muehle.movePiece(MoveType.START_PHASE, 1, new Position(1, 1, 0));
+        boolean isMoveOk = muehle.setPiece(1, new Position(1, 1, 0));
 
         // assert
         assertThat(isMoveOk).isEqualTo(false);
