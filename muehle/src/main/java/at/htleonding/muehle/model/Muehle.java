@@ -23,7 +23,7 @@ public class Muehle {
     }
 
     public boolean movePiece(int color, Position from, Position to) {
-        if (board[from.getZ()][from.getY()][from.getX()] == 0) {
+        if (board[from.getZ()][from.getY()][from.getX()] != color || from.equals(to)) {
             return false;
         }
 
@@ -37,6 +37,7 @@ public class Muehle {
             return false;
         }
 
+        board[from.getZ()][from.getY()][from.getX()] = 0;
         board[to.getZ()][to.getY()][to.getX()] = color;
         return true;
     }
@@ -55,9 +56,11 @@ public class Muehle {
 
     public static void main(String[] args) {
         Muehle m = new Muehle();
-        m.printBoard();
-        boolean result = m.setPiece(1, new Position(1,1,1));
+        boolean result = m.setPiece(1, new Position(0,2,1));
         System.out.println(result);
+        m.printBoard();
+        System.out.println("=========");
+        m.movePiece(1, new Position(-1,2,1), new Position(-1,2,1));
         m.printBoard();
     }
 
