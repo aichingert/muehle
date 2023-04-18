@@ -1,5 +1,6 @@
 package at.htleonding.muehle;
 
+import at.htleonding.muehle.view.GameBoard;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,12 +13,12 @@ import java.util.Objects;
 
 public class App extends Application {
     @Override
-    public void start(Stage stage) throws IOException {
-        Scene scene = new Scene(loadFXML("muehle"), 640, 480);
-        stage.setScene(scene);
-        stage.setTitle("Muehle");
-        stage.getIcons().add(loadIcon("icon"));
-        stage.show();
+    public void start(Stage primaryStage) throws IOException {
+        Scene scene = new Scene(loadFXML("muehle"), 800, 800);
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Muehle - Nine Men's Morris");
+        primaryStage.getIcons().add(loadIcon("icon"));
+        primaryStage.show();
     }
 
     private static Parent loadFXML(String fxml) throws IOException {
