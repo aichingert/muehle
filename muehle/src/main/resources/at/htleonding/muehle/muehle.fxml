@@ -6,12 +6,31 @@
 
 <?import javafx.scene.control.Button?>
 <?import at.htleonding.muehle.view.GameBoard?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
 <VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
       fx:controller="at.htleonding.muehle.controller.MuehleController">
   <padding>
     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
   </padding>
 
-  <GameBoard fx:id="gameBoard" maxWidth="150">
-  </GameBoard>
+  <GameBoard fx:id="gameBoard" maxHeight="400" maxWidth="400" minHeight="400" minWidth="400"></GameBoard>
+
+  <HBox>
+    <Label>X:</Label>
+    <TextField fx:id="textFieldX">0</TextField>
+  </HBox>
+
+  <HBox>
+    <Label>Y:</Label>
+    <TextField fx:id="textFieldY">0</TextField>
+  </HBox>
+
+  <HBox>
+    <Label>Z:</Label>
+    <TextField fx:id="textFieldZ">0</TextField>
+  </HBox>
+
+  <Button onAction="#onBtnSetPiece">Set Piece</Button>
+
 </VBox>

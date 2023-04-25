@@ -17,6 +17,7 @@ public class GameBoard extends Pane {
         double start = 50;
         double boardSize = Math.min(getWidth(), getHeight()) - 2 * start;
         double aSixth = boardSize / 6;
+        System.out.println(boardSize);
 
         // Draw outer square
         drawSquare(start, start, boardSize);
@@ -38,11 +39,14 @@ public class GameBoard extends Pane {
 
                     double x = start + col * ((3 - dimension) * aSixth) + dimension * aSixth;
                     double y = start + row * ((3 - dimension) * aSixth) + dimension * aSixth;
-                    drawIntersection(x, y);
+                    drawIntersection(x, y, Color.BLACK);
                 }
             }
         }
 
+        /*Circle intersection = new Circle(50, 50, 3);
+        intersection.setFill(Color.RED);
+        getChildren().add(intersection);*/
     }
 
     private void drawSquare(double x, double y, double size) {
@@ -64,9 +68,9 @@ public class GameBoard extends Pane {
         getChildren().addAll(leftToMiddleRight, topToMiddleBottom, rightToMiddleLeft, bottomToMiddleTop);
     }
 
-    private void drawIntersection(double x, double y) {
+    public void drawIntersection(double x, double y, Color color) {
         Circle intersection = new Circle(x, y, 3);
-        intersection.setFill(Color.BLACK);
+        intersection.setFill(color);
         getChildren().add(intersection);
     }
 
