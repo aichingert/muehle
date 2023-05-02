@@ -8,9 +8,9 @@ public class Position {
     private int z;
 
     public Position(int x, int y, int z) {
-        this.x = Math.max(Math.min(x, 2), 0);
-        this.y = Math.max(Math.min(y, 2), 0);
-        this.z = Math.max(Math.min(z, 2), 0);
+        this.x = x;
+        this.y = y;
+        this.z = z;
     }
 
     public int getX() {

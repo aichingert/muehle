@@ -14,7 +14,7 @@
     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
   </padding>
 
-  <GameBoard fx:id="gameBoard" maxHeight="400" maxWidth="400" minHeight="400" minWidth="400"></GameBoard>
+  <GameBoard fx:id="gameBoard" onMouseClicked="#methode1" maxHeight="400" maxWidth="400" minHeight="400" minWidth="400" />
 
   <HBox>
     <Label>X:</Label>

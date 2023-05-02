@@ -29,7 +29,7 @@ public class LogicTest {
     @Test
     void possibleDirections() {
         // arrange
-        Muehle muehle = new Muehle();
+        Muehle muehle = new Muehle(null, null);
         Position currPosition = new Position(1, 2, 0);
 
         Position firstPos = new Position(0, 2, 0);

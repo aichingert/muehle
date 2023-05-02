@@ -40,9 +40,8 @@ public class Player {
     public int getPieces() {
         return pieces;
     }
-
-    public void setPieces(int pieces) {
-        this.pieces = pieces;
+    public void sP() {
+        this.pieces += 1;
     }
 
     public int getColor() {

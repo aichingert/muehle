@@ -1,5 +1,6 @@
 package at.htleonding.muehle;
 import at.htleonding.muehle.model.Muehle;
+import at.htleonding.muehle.model.Player;
 import at.htleonding.muehle.model.Position;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -8,7 +9,7 @@ public class MuehleTest {
     @Test
     void setPiecesTest() {
         // arrange
-        Muehle muehle = new Muehle();
+        Muehle muehle = new Muehle(new Player("lol"), new Player("omega lul"));
 
         // act
         muehle.setPiece(1, new Position(0, 0, 0));
@@ -23,7 +24,7 @@ public class MuehleTest {
     @Test
     void illegalMovesTest() {
         // arrange
-        Muehle muehle = new Muehle();
+        Muehle muehle = new Muehle(new Player("lol"), new Player("nur name?!!"));
 
         // act
         boolean isMoveOk = muehle.setPiece(1, new Position(1, 1, 0));
@@ -35,7 +36,7 @@ public class MuehleTest {
     @Test
     void upMovesTest() {
         // arrange
-        Muehle muehle = new Muehle();
+        Muehle muehle = new Muehle(null, null);
 
         // act
         //todo
@@ -47,7 +48,7 @@ public class MuehleTest {
     @Test
     void downMovesTest() {
         // arrange
-        Muehle muehle = new Muehle();
+        Muehle muehle = new Muehle(null, null);
 
         // act
         //todo
@@ -59,7 +60,7 @@ public class MuehleTest {
     @Test
     void leftMovesTest() {
         // arrange
-        Muehle muehle = new Muehle();
+        Muehle muehle = new Muehle(null, null);
 
         // act
         //todo
@@ -71,7 +72,7 @@ public class MuehleTest {
     @Test
     void rightMovesTest() {
         // arrange
-        Muehle muehle = new Muehle();
+        Muehle muehle = new Muehle(null, null);
 
         // act
         //todo

@@ -1,17 +1,19 @@
 package at.htleonding.muehle.controller;
 
+import at.htleonding.muehle.model.Logic;
 import at.htleonding.muehle.model.Muehle;
 import at.htleonding.muehle.model.Position;
 import at.htleonding.muehle.view.GameBoard;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
 public class MuehleController {
+    private static final double OFFSET = 10.0;
 
     int currentColor;
     Muehle game;
@@ -23,19 +25,15 @@ public class MuehleController {
     @FXML
     private TextField textFieldZ;
     @FXML
-    private TextField welcomeText;
-    @FXML
     private GameBoard gameBoard;
+
+    private Circle currentlySelected;
 
     @FXML
     private void initialize() {
-        game = new Muehle();
-        currentColor = 1;
-    }
-
-    @FXML
-    protected void onHelloButtonClick() {
-        welcomeText.setText("Welcome to JavaFX Application!");
+        this.game = new Muehle(null, null);
+        this.currentlySelected = null;
+        this.currentColor = 1;
     }
 
     @FXML
@@ -50,7 +48,6 @@ public class MuehleController {
             drawCircleAtPos(pos);
             currentColor = currentColor == 1 ? 2 : 1;
         }
-
     }
 
     private void drawCircleAtPos(Position pos) {
@@ -75,5 +72,25 @@ public class MuehleController {
         Circle intersection = new Circle(x, y, 9);
         intersection.setFill(color);
         gameBoard.getChildren().add(intersection);
+    }
+
+    public void methode1(MouseEvent mouseEvent) {
+        if (this.currentlySelected != null) {
+
+            return;
+        }
+
+        double x = mouseEvent.getX();
+        double y = mouseEvent.getY();
+
+        this.currentlySelected = this.gameBoard.getChildren()
+                .stream()
+                .filter(e -> e.getClass().equals(Circle.class))
+                .map(c -> (Circle)c)
+                .filter(c ->
+                        c.getCenterX() + OFFSET > x && c.getCenterX() - OFFSET < x
+                        && c.getCenterY() + OFFSET > y && c.getCenterY() - OFFSET < y)
+                .findFirst().orElse(null);
+
     }
 }
