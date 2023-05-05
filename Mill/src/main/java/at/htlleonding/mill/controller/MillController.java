@@ -1,22 +1,19 @@
-package at.htleonding.muehle.controller;
+package at.htlleonding.mill.controller;
 
-import at.htleonding.muehle.model.Logic;
-import at.htleonding.muehle.model.Muehle;
-import at.htleonding.muehle.model.Position;
-import at.htleonding.muehle.view.GameBoard;
+import at.htlleonding.mill.model.Mill;
+import at.htlleonding.mill.model.Player;
+import at.htlleonding.mill.model.helper.Position;
+import at.htlleonding.mill.view.GameBoard;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-public class MuehleController {
+public class MillController {
     private static final double OFFSET = 10.0;
-
-    int currentColor;
-    Muehle game;
+    Mill game;
 
     @FXML
     private TextField textFieldX;
@@ -31,9 +28,9 @@ public class MuehleController {
 
     @FXML
     private void initialize() {
-        this.game = new Muehle(null, null);
+        boolean playerOneIsWhite = Math.random() > 0.5;
+        this.game = new Mill(new Player(playerOneIsWhite ? 1 : 2), new Player(playerOneIsWhite ? 2 : 1));
         this.currentlySelected = null;
-        this.currentColor = 1;
     }
 
     @FXML
@@ -42,11 +39,11 @@ public class MuehleController {
         int y = Integer.parseInt(textFieldY.getText());
         int z = Integer.parseInt(textFieldZ.getText());
         Position pos = new Position(x, y, z);
-        System.out.println("onBtnSetPiece " + currentColor);
+        System.out.println("onBtnSetPiece " + game.getCurrentPlayerColor());
 
-        if (game.setPiece(currentColor, pos)) {
+        if (game.setPiece(game.getCurrentPlayerColor(), pos)) {
             drawCircleAtPos(pos);
-            currentColor = currentColor == 1 ? 2 : 1;
+            game.switchTurn();
         }
     }
 
@@ -60,11 +57,11 @@ public class MuehleController {
         double x = 50 + pos.getX() * ((3 - pos.getZ()) * aSixth) + pos.getZ() * aSixth;
         double y = 50 + pos.getY() * ((3 - pos.getZ()) * aSixth) + pos.getZ() * aSixth;
 
-        if (currentColor == 1) {
-            drawIntersection(x, y, Color.GRAY);
-        }
-        else if (currentColor == 2) {
+        if (game.getCurrentPlayerColor() == 1) {
             drawIntersection(x, y, Color.WHITE);
+        }
+        else if (game.getCurrentPlayerColor() == 2) {
+            drawIntersection(x, y, Color.GRAY);
         }
     }
 
@@ -89,8 +86,9 @@ public class MuehleController {
                 .map(c -> (Circle)c)
                 .filter(c ->
                         c.getCenterX() + OFFSET > x && c.getCenterX() - OFFSET < x
-                        && c.getCenterY() + OFFSET > y && c.getCenterY() - OFFSET < y)
+                                && c.getCenterY() + OFFSET > y && c.getCenterY() - OFFSET < y)
                 .findFirst().orElse(null);
 
+        System.out.println(this.currentlySelected);
     }
 }

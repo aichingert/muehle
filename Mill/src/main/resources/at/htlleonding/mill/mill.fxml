@@ -5,11 +5,11 @@
 <?import javafx.scene.layout.VBox?>
 
 <?import javafx.scene.control.Button?>
-<?import at.htleonding.muehle.view.GameBoard?>
+<?import at.htlleonding.mill.view.GameBoard?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
 <VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="at.htleonding.muehle.controller.MuehleController">
+      fx:controller="at.htlleonding.mill.controller.MillController">
   <padding>
     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
   </padding>

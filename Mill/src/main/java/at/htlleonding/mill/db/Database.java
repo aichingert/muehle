@@ -1,4 +1,4 @@
-package at.htleonding.muehle.db;
+package at.htlleonding.mill.db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

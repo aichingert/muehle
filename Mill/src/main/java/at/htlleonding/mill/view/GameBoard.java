@@ -1,4 +1,4 @@
-package at.htleonding.muehle.view;
+package at.htlleonding.mill.view;
 
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -6,7 +6,6 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 
 public class GameBoard extends Pane {
-
     public GameBoard() {
         drawBoard();
     }

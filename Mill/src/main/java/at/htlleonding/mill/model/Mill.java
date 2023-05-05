@@ -1,26 +1,25 @@
-package at.htleonding.muehle.model;
+package at.htlleonding.mill.model;
 
-import javafx.geometry.Pos;
+import at.htlleonding.mill.model.helper.Position;
+import at.htlleonding.mill.model.helper.Logic;
 
 import java.util.List;
-import java.util.Scanner;
 
-public class Muehle {
-    public final int MAX_PIECES = 9;
+public class Mill {
     public final int BOARD_SIZE = 3;
-    private final int[][][] board;
+    private int[][][] board;
 
-    private Player p1;
-    private Player p2;
+    private Player playerOne;
+    private Player playerTwo;
 
-    public Muehle(Player p1, Player p2) {
-        this.p1 = p1;
-        this.p2 = p2;
+    public Mill(Player playerOne, Player playerTwo) {
+        this.playerTwo = playerTwo;
+        this.playerOne = playerOne;
         this.board = new int[BOARD_SIZE][BOARD_SIZE][BOARD_SIZE];
     }
 
     public boolean setPiece(int color, Position position) {
-        if (color == 1 && this.p1.getPieces() == 9 || color == 2 && p2.getPieces() == 9 || color != 1 && color != 2) {
+        if (color == 1 && this.playerOne.getAmountOfPieces() == 9 || color == 2 && playerTwo.getAmountOfPieces() == 9 || color != 1 && color != 2) {
             return false;
         }
 
@@ -31,8 +30,8 @@ public class Muehle {
         this.board[position.getZ()][position.getY()][position.getX()] = color;
 
         switch (color) {
-            case 1 -> p1.sP();
-            case 2 -> p2.sP();
+            case 1 -> this.playerOne.setPiece();
+            case 2 -> this.playerTwo.setPiece();
         }
 
         return true;
@@ -62,19 +61,16 @@ public class Muehle {
         return this.board[position.getZ()][position.getY()][position.getX()];
     }
 
-    public Player getP1() {
-        return p1;
+    public int getCurrentPlayerColor() {
+        if (this.playerOne.isPlayerTurn()) {
+            return this.playerOne.getColor();
+        }
+
+        return this.playerTwo.getColor();
     }
 
-    public void setP1(Player p1) {
-        this.p1 = p1;
-    }
-
-    public Player getP2() {
-        return p2;
-    }
-
-    public void setP2(Player p2) {
-        this.p2 = p2;
+    public void switchTurn() {
+        this.playerOne.setPlayerTurn(!this.playerOne.isPlayerTurn());
+        this.playerTwo.setPlayerTurn(!this.playerTwo.isPlayerTurn());
     }
 }

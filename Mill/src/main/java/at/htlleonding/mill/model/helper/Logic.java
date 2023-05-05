@@ -1,11 +1,11 @@
-package at.htleonding.muehle.model;
+package at.htlleonding.mill.model.helper;
 
 /*
-* Muehle Logic:
+* Mill Logic:
 * Description: Implements the game logic, the moves a piece can make
  */
 
-import javafx.geometry.Pos;
+import at.htlleonding.mill.model.Mill;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +37,7 @@ public class Logic {
      * @param position  the position where we want to know possible moves from
      * @return A list of the possible positions
      */
-    public static List<Position> getMoves(Muehle game, Position position) {
+    public static List<Position> getMoves(Mill game, Position position) {
         List<Position> possiblePositions = new ArrayList<>();
         final int boardMax = 2;
         final int boardMin = 0;
@@ -74,7 +74,7 @@ public class Logic {
      * @param to        the position where we would be
      * @return true if the move activates a muehle
      */
-    public static boolean activatesMuehle(Muehle game, Position from, Position to) {
+    public static boolean activatesMuehle(Mill game, Position from, Position to) {
         int color = game.getValueAt(from);
         boolean[] doesActivate = {true,true,true};
 

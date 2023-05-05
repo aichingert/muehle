@@ -1,13 +1,10 @@
-package at.htleonding.muehle;
+package at.htlleonding.mill;
 
-import at.htleonding.muehle.view.GameBoard;
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -16,7 +13,7 @@ import java.util.Objects;
 public class App extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
-        Scene scene = new Scene(loadFXML("muehle"), 800, 800);
+        Scene scene = new Scene(loadFXML("mill"), 800, 800);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Muehle - Nine Men's Morris");
         primaryStage.getIcons().add(loadIcon("icon"));

@@ -1,6 +1,4 @@
-package at.htleonding.muehle.model;
-
-import java.util.Objects;
+package at.htlleonding.mill.model.helper;
 
 public class Position {
     private int x;
