@@ -53,10 +53,6 @@ public class GameBoard extends Pane {
                 }
             }
         }
-
-        /*Circle intersection = new Circle(50, 50, 3);
-        intersection.setFill(Color.RED);
-        getChildren().add(intersection);*/
     }
 
     private void drawSquare(double x, double y, double size) {
@@ -96,12 +92,43 @@ public class GameBoard extends Pane {
     }
 
     public Position convertCoordinateToPosition(double x, double y) {
-        // FIXME: Find a way to get the dimension from the x and y values and then rearrange the
-        //  formula correct
-        double col = x / (3 * A_SIXTH + 3 * A_SIXTH);
-        double row = y / (3 * A_SIXTH + 3 * A_SIXTH);
-        System.out.println(col);
+        int posX = -1;
+        int posY = -1;
+        int posZ;
 
-        return new Position((int)Math.round(col),(int)Math.round(row),0);
+        x -= START;
+        y -= START;
+
+        if (x > 2 * A_SIXTH - OFFSET && x < 4 * A_SIXTH + OFFSET &&
+            y > 2 * A_SIXTH - OFFSET && y < 4 * A_SIXTH + OFFSET) {
+            posZ = 2;
+        }
+        else if (x > A_SIXTH - OFFSET && x < 5 * A_SIXTH + OFFSET &&
+                y > A_SIXTH - OFFSET && y < 5 * A_SIXTH + OFFSET) {
+            posZ = 1;
+        }
+        else {
+            posZ = 0;
+        }
+
+        int helper = (int)(Math.round(x / A_SIXTH));
+        switch (helper) {
+            case 0, 1, 2 -> posX = 0;
+            case 3 -> posX = 1;
+            case 4, 5, 6 -> posX = 2;
+        }
+
+        helper = (int)(Math.round(y / A_SIXTH));
+        switch (helper) {
+            case 0, 1, 2 -> posY = 0;
+            case 3 -> posY = 1;
+            case 4, 5, 6 -> posY = 2;
+        }
+
+        System.out.println(posX);
+        System.out.println(posY);
+        System.out.println(posZ + "\n");
+
+        return new Position(posX, posY, posZ);
     }
 }

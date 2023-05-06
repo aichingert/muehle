@@ -16,21 +16,4 @@
 
   <GameBoard fx:id="gameBoard" onMouseClicked="#playerInputEvent" maxHeight="400" maxWidth="400" minHeight="400" minWidth="400" />
 
-  <HBox>
-    <Label>X:</Label>
-    <TextField fx:id="textFieldX">0</TextField>
-  </HBox>
-
-  <HBox>
-    <Label>Y:</Label>
-    <TextField fx:id="textFieldY">0</TextField>
-  </HBox>
-
-  <HBox>
-    <Label>Z:</Label>
-    <TextField fx:id="textFieldZ">0</TextField>
-  </HBox>
-
-  <Button onAction="#onBtnSetPiece">Set Piece</Button>
-
 </VBox>
