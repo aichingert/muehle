@@ -1,34 +1,44 @@
 package at.htlleonding.mill.view;
 
+import at.htlleonding.mill.model.helper.Position;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.util.Pair;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GameBoard extends Pane {
+    public static final double OFFSET = 10.0;
+    private final int WIDTH = 400;
+    private final int HEIGHT = 400;
+    private final double START = 50.0;
+    private final double BOARD_SIZE = Math.min(WIDTH, HEIGHT) - 2.0 * START;
+    private final double A_SIXTH = BOARD_SIZE / 6.0;
+
+    private final List<Pair<Double, Double>> circleCoordinates = new ArrayList<>();
     public GameBoard() {
         drawBoard();
     }
 
     private void drawBoard() {
-        this.setWidth(400);
-        this.setHeight(400);
-        double start = 50;
-        double boardSize = Math.min(getWidth(), getHeight()) - 2 * start;
-        double aSixth = boardSize / 6;
-        System.out.println(boardSize);
+        this.setWidth(WIDTH);
+        this.setHeight(HEIGHT);
+        System.out.println(BOARD_SIZE);
 
         // Draw outer square
-        drawSquare(start, start, boardSize);
+        drawSquare(START, START, BOARD_SIZE);
 
         // Draw middle square
-        drawSquare(start + aSixth, start + aSixth, 2 * boardSize / 3);
+        drawSquare(START + A_SIXTH, START + A_SIXTH, 2.0 * BOARD_SIZE / 3.0);
 
         // Draw inner square
-        drawSquare(start + 2 * aSixth, start + 2 * aSixth, 2 * aSixth);
+        drawSquare(START + 2.0 * A_SIXTH, START + 2.0 * A_SIXTH, 2.0 * A_SIXTH);
 
         // Draw lines connecting squares
-        drawConnectingLines(start, aSixth);
+        drawConnectingLines(START, A_SIXTH);
 
         // Draw intersections as circles
         for (int dimension = 0; dimension < 3; dimension++) {
@@ -36,8 +46,9 @@ public class GameBoard extends Pane {
                 for (int col = 0; col < 3; col++) {
                     if (row == 1 && col == 1) continue;
 
-                    double x = start + col * ((3 - dimension) * aSixth) + dimension * aSixth;
-                    double y = start + row * ((3 - dimension) * aSixth) + dimension * aSixth;
+                    double x = START + col * ((3 - dimension) * A_SIXTH) + dimension * A_SIXTH;
+                    double y = START + row * ((3 - dimension) * A_SIXTH) + dimension * A_SIXTH;
+                    circleCoordinates.add(new Pair<>(x,y));
                     drawIntersection(x, y, Color.BLACK);
                 }
             }
@@ -73,4 +84,24 @@ public class GameBoard extends Pane {
         getChildren().add(intersection);
     }
 
+    public boolean containsCoordinate(double x, double y) {
+        for(Pair<Double,Double> cord : circleCoordinates) {
+            if (cord.getKey() - OFFSET < x && cord.getKey() + OFFSET > x &&
+            cord.getValue() - OFFSET < y && y < cord.getValue() + OFFSET) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public Position convertCoordinateToPosition(double x, double y) {
+        // FIXME: Find a way to get the dimension from the x and y values and then rearrange the
+        //  formula correct
+        double col = x / (3 * A_SIXTH + 3 * A_SIXTH);
+        double row = y / (3 * A_SIXTH + 3 * A_SIXTH);
+        System.out.println(col);
+
+        return new Position((int)Math.round(col),(int)Math.round(row),0);
+    }
 }

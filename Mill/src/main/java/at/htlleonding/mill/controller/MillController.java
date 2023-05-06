@@ -12,7 +12,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
 public class MillController {
-    private static final double OFFSET = 10.0;
     Mill game;
 
     @FXML
@@ -71,24 +70,43 @@ public class MillController {
         gameBoard.getChildren().add(intersection);
     }
 
-    public void methode1(MouseEvent mouseEvent) {
-        if (this.currentlySelected != null) {
-
-            return;
-        }
-
+    public void playerInputEvent(MouseEvent mouseEvent) {
         double x = mouseEvent.getX();
         double y = mouseEvent.getY();
+
+        if (this.currentlySelected != null) {
+            moveSelectedPieceToNextPositionOrDropIt(x, y);
+            return;
+        }
 
         this.currentlySelected = this.gameBoard.getChildren()
                 .stream()
                 .filter(e -> e.getClass().equals(Circle.class))
                 .map(c -> (Circle)c)
                 .filter(c ->
-                        c.getCenterX() + OFFSET > x && c.getCenterX() - OFFSET < x
-                                && c.getCenterY() + OFFSET > y && c.getCenterY() - OFFSET < y)
+                        c.getCenterX() + GameBoard.OFFSET > x && c.getCenterX() - GameBoard.OFFSET < x
+                                && c.getCenterY() + GameBoard.OFFSET > y && c.getCenterY() - GameBoard.OFFSET < y
+                                && (c.getFill().equals(Color.GRAY) || c.getFill().equals(Color.WHITE)))
                 .findFirst().orElse(null);
 
+        if (this.currentlySelected != null) {
+            // TODO: Highlight the currentlySelected piece later after we implemented the setPiece event with the mouse
+            //this.currentlySelected.setFill(Color.RED);
+        }
+
         System.out.println(this.currentlySelected);
+    }
+
+    private void moveSelectedPieceToNextPositionOrDropIt(double x, double y) {
+        if (!gameBoard.containsCoordinate(x, y)) {
+            //this.currentlySelected.setFill(game.getCurrentPlayerColor() == 1 ? Color.GRAY : Color.WHITE);
+            this.currentlySelected = null;
+            return;
+        }
+
+        Position p = gameBoard.convertCoordinateToPosition(x,y);
+        System.out.println(p);
+
+        System.out.println("");
     }
 }
