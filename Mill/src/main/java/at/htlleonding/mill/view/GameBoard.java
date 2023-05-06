@@ -125,10 +125,6 @@ public class GameBoard extends Pane {
             case 4, 5, 6 -> posY = 2;
         }
 
-        System.out.println(posX);
-        System.out.println(posY);
-        System.out.println(posZ + "\n");
-
         return new Position(posX, posY, posZ);
     }
 }

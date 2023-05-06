@@ -9,16 +9,17 @@ import java.util.List;
 
 public class Mill {
     public final int BOARD_SIZE = 3;
-    private int[][][] board;
+    private final int[][][] board;
+    private int moveCounter;
     private GameState gameState = GameState.SET;
-
-    private Player playerOne;
-    private Player playerTwo;
+    private final Player playerOne;
+    private final Player playerTwo;
 
     public Mill(Player playerOne, Player playerTwo) {
         this.playerTwo = playerTwo;
         this.playerOne = playerOne;
         this.board = new int[BOARD_SIZE][BOARD_SIZE][BOARD_SIZE];
+        this.moveCounter = 0;
     }
 
     public boolean setPiece(int color, Position position) {
@@ -81,11 +82,20 @@ public class Mill {
     }
 
     public void switchTurn() {
+        this.moveCounter += 1;
         this.playerOne.setPlayerTurn(!this.playerOne.isPlayerTurn());
         this.playerTwo.setPlayerTurn(!this.playerTwo.isPlayerTurn());
     }
 
     public GameState getGameState() {
         return gameState;
+    }
+
+    public void updateGameState() {
+        if (this.moveCounter <= 2 * Player.MAX_PIECES) {
+            return;
+        }
+
+        this.gameState = GameState.MOVE;
     }
 }

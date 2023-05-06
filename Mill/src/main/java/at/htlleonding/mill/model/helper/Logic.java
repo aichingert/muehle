@@ -67,14 +67,14 @@ public class Logic {
     }
 
     /**
-     * Checks if a move from Position A -> to Position B would activate a Muehle
+     * Checks if a move from Position A -> to Position B would activate a mill
      *
      * @param game      the current game
      * @param from      the position where we currently are
      * @param to        the position where we would be
-     * @return true if the move activates a muehle
+     * @return true if the move activates a mill
      */
-    public static boolean activatesMuehle(Mill game, Position from, Position to) {
+    public static boolean activatesMill(Mill game, Position from, Position to) {
         int color = game.getValueAt(from);
         boolean[] doesActivate = {true,true,true};
 
@@ -82,7 +82,7 @@ public class Logic {
             return false;
         }
 
-        // If we are able to switch the dimension then check if we get a muehle there
+        // If we are able to switch the dimension then check if we get a mill there
         if (isAbleToSwitchDimensions(to)) {
             for (int i = 0; i < game.BOARD_SIZE; i++) {
                 if (game.getValueAt(new Position(to.getX(), to.getY(), i)) != color) {
@@ -91,7 +91,7 @@ public class Logic {
             }
         }
 
-        // Check for default Y and X if we get a muehle
+        // Check for default Y and X if we get a mill
         for (int i = 0; i < game.BOARD_SIZE; i++) {
             if (game.getValueAt(new Position(to.getX(), i, to.getZ())) != color) {
                 doesActivate[1] = false;
