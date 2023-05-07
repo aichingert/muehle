@@ -1,6 +1,5 @@
 package at.htlleonding.mill.controller;
 
-import at.htlleonding.mill.model.GameState;
 import at.htlleonding.mill.model.Mill;
 import at.htlleonding.mill.model.Player;
 import at.htlleonding.mill.model.helper.Position;
@@ -9,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 
 public class MillController {
@@ -33,19 +33,9 @@ public class MillController {
         double x = mouseEvent.getX();
         double y = mouseEvent.getY();
 
-        if (!gameBoard.containsCoordinate(x, y)) {
-            return;
-        }
-        Position pos = gameBoard.convertCoordinateToPosition(x, y);
-
         switch (game.getGameState()) {
             case SET -> {
-                if (game.setPiece(game.getCurrentPlayerColor(), pos)) {
-                    drawCircleAtPos(pos);
-                    game.switchTurn();
-                } else {
-                    game.updateGameState();
-                }
+                setPieceAtSelectedLocation(x, y);
             }
             case MOVE -> {
                 if (this.currentlySelected != null) {
@@ -64,26 +54,53 @@ public class MillController {
         }
     }
 
-    private void moveSelectedPieceToNextPositionOrDropIt(double x, double y) {
+    private void setPieceAtSelectedLocation(double x, double y) {
         if (!gameBoard.containsCoordinate(x, y)) {
-            this.currentlySelected.setFill(game.getCurrentPlayerColor() == 1 ? Color.GRAY : Color.WHITE);
+            return;
+        }
+        Position pos = gameBoard.convertCoordinateToPosition(x, y);
+
+        if (game.setPiece(game.getCurrentPlayerColor(), pos)) {
+            drawCircleAtPos(pos);
+            game.switchTurn();
+            game.updateGameState();
+        }
+    }
+
+    private void moveSelectedPieceToNextPositionOrDropIt(double x, double y) {
+        this.currentlySelected.setFill(game.getCurrentPlayerColor() == 1 ? Color.WHITE : Color.GRAY);
+
+        if (!gameBoard.containsCoordinate(x, y)) {
             this.currentlySelected = null;
             return;
         }
 
-        System.out.println();
+        Position from = gameBoard.convertCoordinateToPosition(this.currentlySelected.getCenterX(), this.currentlySelected.getCenterY());
+        Position to = gameBoard.convertCoordinateToPosition(x, y);
+
+        if (!game.movePiece(game.getCurrentPlayerColor(), from, to)) {
+            this.currentlySelected = null;
+            return;
+        }
+
+        gameBoard.getChildren().remove(this.currentlySelected);
+        this.currentlySelected = null;
+        drawCircleAtPos(to);
+        game.switchTurn();
     }
 
     private void getPieceFromSelectedCoordinates(double x, double y) {
-        this.currentlySelected = this.gameBoard.getChildren()
-                .stream()
+        this.currentlySelected = this.gameBoard.getChildren().stream()
                 .filter(e -> e.getClass().equals(Circle.class))
                 .map(c -> (Circle)c)
-                .filter(c ->
-                        c.getCenterX() + GameBoard.OFFSET > x && c.getCenterX() - GameBoard.OFFSET < x
-                                && c.getCenterY() + GameBoard.OFFSET > y && c.getCenterY() - GameBoard.OFFSET < y
-                                && (c.getFill().equals(Color.GRAY) || c.getFill().equals(Color.WHITE)))
+                .filter(c -> checkIfCircleIsInBounds(c.getCenterX(), c.getCenterY(), c.getFill(), x, y))
                 .findFirst().orElse(null);
+    }
+
+    private boolean checkIfCircleIsInBounds(double cX, double cY, Paint c, double x, double y) {
+        return cX + GameBoard.OFFSET > x && cX - GameBoard.OFFSET < x
+                && cY + GameBoard.OFFSET > y && cY - GameBoard.OFFSET < y
+                && c.equals(game.getCurrentPlayerColor() == 1 ? Color.WHITE : Color.GRAY);
     }
 
     private void drawCircleAtPos(Position pos) {

@@ -16,16 +16,16 @@ public class Mill {
     private final Player playerTwo;
 
     public Mill(Player playerOne, Player playerTwo) {
-        this.playerTwo = playerTwo;
         this.playerOne = playerOne;
+        this.playerTwo = playerTwo;
         this.board = new int[BOARD_SIZE][BOARD_SIZE][BOARD_SIZE];
         this.moveCounter = 0;
     }
 
     public boolean setPiece(int color, Position position) {
         if (gameState != GameState.SET ||
-                color == 1 && this.playerOne.getAmountOfPieces() == 9 ||
-                color == 2 && playerTwo.getAmountOfPieces() == 9 ||
+                this.playerOne.getAmountOfPieces() == Player.MAX_PIECES &&
+                this.playerTwo.getAmountOfPieces() == Player.MAX_PIECES ||
                 color != 1 && color != 2) {
             return false;
         }
@@ -37,20 +37,19 @@ public class Mill {
 
         this.board[position.getZ()][position.getY()][position.getX()] = color;
 
-        switch (color) {
-            case 1 -> this.playerOne.setPiece();
-            case 2 -> this.playerTwo.setPiece();
-        }
-
-        if (this.playerOne.getAmountOfPieces() == 9 && this.playerTwo.getAmountOfPieces() == 9) {
-            this.gameState = GameState.MOVE;
+        if (this.playerOne.getColor() == color) {
+            this.playerOne.setPiece();
+        } else {
+            this.playerTwo.setPiece();
         }
 
         return true;
     }
 
     public boolean movePiece(int color, Position from, Position to) {
-        if (board[from.getZ()][from.getY()][from.getX()] != color || from.equals(to)) {
+        // Note: There is no need to check if the current position is the same color as the piece we want to move
+        // because we can only select pieces that have our color
+        if (from.equals(to)) {
             return false;
         }
 
@@ -92,7 +91,7 @@ public class Mill {
     }
 
     public void updateGameState() {
-        if (this.moveCounter <= 2 * Player.MAX_PIECES) {
+        if (this.moveCounter < 2 * Player.MAX_PIECES) {
             return;
         }
 
