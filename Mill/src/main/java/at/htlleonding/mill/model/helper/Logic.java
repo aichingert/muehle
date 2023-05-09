@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Logic {
-    private static final Position[] directions = {
+    public static final Position[] directions = {
             new Position(0,0,1),
             new Position(0,0,-1),
             new Position(0,1,0),

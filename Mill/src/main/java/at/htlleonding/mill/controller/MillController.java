@@ -1,5 +1,6 @@
 package at.htlleonding.mill.controller;
 
+import at.htlleonding.mill.bot.BruteForce;
 import at.htlleonding.mill.model.Mill;
 import at.htlleonding.mill.model.Player;
 import at.htlleonding.mill.model.helper.Position;

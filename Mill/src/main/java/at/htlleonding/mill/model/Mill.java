@@ -9,7 +9,7 @@ import java.util.List;
 
 public class Mill {
     public final int BOARD_SIZE = 3;
-    private final int[][][] board;
+    private int[][][] board;
     private int moveCounter;
     private GameState gameState = GameState.SET;
     private final Player playerOne;
@@ -96,5 +96,13 @@ public class Mill {
         }
 
         this.gameState = GameState.MOVE;
+    }
+
+    public Mill copy() {
+        Mill cp = new Mill(this.playerOne.copy(), this.playerTwo.copy());
+        cp.moveCounter = this.moveCounter;
+        cp.gameState = this.gameState;
+        cp.board = this.board;
+        return cp;
     }
 }
