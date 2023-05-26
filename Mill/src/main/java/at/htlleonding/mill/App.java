@@ -13,14 +13,14 @@ import java.util.Objects;
 public class App extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
-        Scene scene = new Scene(loadFXML("mill"), 800, 800);
+        Scene scene = new Scene(loadFXML("login"), 800, 800);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Muehle - Nine Men's Morris");
         primaryStage.getIcons().add(loadIcon("icon"));
         primaryStage.show();
     }
 
-    private static Parent loadFXML(String fxml) throws IOException {
+    public static Parent loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
         return fxmlLoader.load();
     }

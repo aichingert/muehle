@@ -1,32 +1,33 @@
+
 package at.htlleonding.mill.db;
 
+import org.apache.derby.jdbc.ClientDataSource;
+
+import javax.sql.DataSource;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Database {
-    private static final String CONNECTION_STRING = "jdbc:derby:db";
-    private static Database instance;
-    private Connection connection;
 
-    private Database() { };
+    static final String DATABASE = "db";
+    static final String USERNAME = "app";
+    static final String PASSWORD = "app";
+    public static final String URL = "jdbc:derby://localhost:1527/" + DATABASE + ";create=true";
 
-    public static Database getInstance() {
-        if (instance == null) {
-            instance = new Database();
-        }
 
-        return instance;
+    public static DataSource getDataSource(){
+        ClientDataSource dataSource = new ClientDataSource();
+        dataSource.setDatabaseName(DATABASE);
+        dataSource.setUser(USERNAME);
+        dataSource.setPassword(PASSWORD);
+        return dataSource;
     }
 
-    public Connection getConnection() {
-        try {
-            if (connection == null || connection.isClosed()) {
-                connection = DriverManager.getConnection(CONNECTION_STRING);
-            }
+    public void createTableTest(){
+        try (Connection conn = getDataSource().getConnection()) {
+
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
-        return connection;
     }
 }
