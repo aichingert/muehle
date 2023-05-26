@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 
 <VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="at.htlleonding.mill.controller.Login">
+      fx:controller="at.htlleonding.mill.controller.LoginController">
 
     <HBox alignment="CENTER">
         <VBox alignment="CENTER" spacing="20.0">
@@ -15,9 +15,11 @@
             <Label text="Password: " />
         </VBox>
         <VBox alignment="CENTER" spacing="20.0">
-            <TextField fx:id="username" />
-            <TextField fx:id="password" />
+            <TextField fx:id="username"/>
+            <PasswordField  fx:id="password"/>
         </VBox>
     </HBox>
-    <Button fx:id="changeBtn" text="Register" onAction="#switchToHomePage" />
+    <Button fx:id="loginBtn" text="Login" onAction="#onLoginBtn" />
+    <Button fx:id="registerBtn" onAction="#switchToRegisterPage">To register page</Button>
+    <Label fx:id="infoLabel"/>
 </VBox>

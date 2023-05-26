@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="at.htlleonding.mill.controller.RegisterController">
+
+    <HBox alignment="CENTER" spacing="5">
+        <Label text="Username: " />
+        <TextField fx:id="username"/>
+    </HBox>
+
+    <HBox alignment="CENTER" spacing="5">
+        <Label text="Ingame name (alias): " />
+        <TextField fx:id="alias"/>
+    </HBox>
+
+    <HBox alignment="CENTER" spacing="5">
+        <Label text="Password: "/>
+        <PasswordField fx:id="password"/>
+    </HBox>
+
+    <Button fx:id="registerBtn" text="Register" onAction="#onBtnRegister" />
+    <Button fx:id="loginBtn" onAction="#switchToLoginPage">To login page</Button>
+    <Label fx:id="infoLabel"/>
+</VBox>
