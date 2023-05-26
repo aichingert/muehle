@@ -34,9 +34,6 @@ public class RegisterController {
         String alias = this.alias.getText();
         String password = this.password.getText();
 
-        System.out.println(username);
-        System.out.println(password);
-
         if (username.isEmpty() || username.isBlank() ||
             alias.isEmpty() || alias.isBlank() ||
             password.isEmpty() || password.isBlank()) {
@@ -48,7 +45,7 @@ public class RegisterController {
         else {
             LoginHelper.getInstance().insertUser(username, alias, password);
             Stage stage = (Stage) registerBtn.getScene().getWindow();
-            stage.setScene(new Scene(loadFXML("mill"), 800, 800));
+            stage.setScene(new Scene(loadFXML("login"), 800, 800));
         }
     }
 

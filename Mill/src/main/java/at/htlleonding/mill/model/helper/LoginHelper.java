@@ -27,7 +27,7 @@ public class LoginHelper {
 
     public boolean doesUsernameExist(String username) {
         try (Connection connection = dataSource.getConnection()) {
-            String sql = "SELECT count(*) as 'cnt' FROM M_USER WHERE u_username = ?";
+            String sql = "SELECT count(*) as \"cnt\" FROM M_USER WHERE u_username = ?";
 
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, username);

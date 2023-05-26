@@ -33,9 +33,6 @@ public class LoginController {
         String username = this.username.getText();
         String password = this.password.getText();
 
-        System.out.println(username);
-        System.out.println(password);
-
         if (username.isEmpty() || username.isBlank() ||
                 password.isEmpty() || password.isBlank()) {
             this.infoLabel.setText("Please fill out every field!");
