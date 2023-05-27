@@ -8,6 +8,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -35,16 +37,16 @@ public class LoginController {
         String password = this.password.getText();
 
         if (username.isEmpty() || password.isEmpty()) {
-            (new Alert(Alert.AlertType.INFORMATION, "Please fill out every field!")).show();
+            (new Alert(Alert.AlertType.WARNING, "Please fill out every field!")).show();
             this.infoLabel.setText("Please fill out every field!");
             return;
         }
 
         if (LoginHelper.getInstance().isValidUser(username, password)) {
             Stage stage = (Stage) loginBtn.getScene().getWindow();
-            stage.setScene(new Scene(loadFXML("mill"), 800, 800));
+            stage.setScene(new Scene(loadFXML("home"), 800, 800));
         } else {
-            (new Alert(Alert.AlertType.INFORMATION, "Incorrect username or password")).show();
+            (new Alert(Alert.AlertType.WARNING, "Incorrect username or password")).show();
             this.infoLabel.setText("Invalid username or password!");
         }
     }
@@ -53,5 +55,20 @@ public class LoginController {
     private void switchToRegisterPage(ActionEvent actionEvent) throws IOException {
         Stage stage = (Stage) loginBtn.getScene().getWindow();
         stage.setScene(new Scene(loadFXML("register"), 800, 800));
+    }
+
+    @FXML
+    private void onKeyPressedLogin(KeyEvent keyEvent) throws IOException {
+        if (keyEvent.getCode() == KeyCode.ENTER) {
+            if (!username.getText().isEmpty() && password.getText().isEmpty()) {
+                password.requestFocus();
+            }
+            else if (username.getText().isEmpty() && !password.getText().isEmpty()) {
+                username.requestFocus();
+            }
+            else if (!username.getText().isEmpty() && !password.getText().isEmpty()) {
+                onLoginBtn(null);
+            }
+        }
     }
 }

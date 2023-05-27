@@ -87,7 +87,7 @@ public class UserRepository implements Persistent<User> {
         List<User> users = new ArrayList<>();
 
         try (Connection connection = dataSource.getConnection()) {
-            String sql = "SELECT * FROM M_USER";
+            String sql = "SELECT mu.* FROM M_USER mu LEFT OUTER JOIN M_GAME mg ON mu.U_ID = mg.G_WINNER GROUP BY mu.U_ID, mu.U_USERNAME, mu.U_ALIAS, mu.U_PASSWORD ORDER BY count(mg.G_WINNER) DESC";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet result = preparedStatement.executeQuery();
 
