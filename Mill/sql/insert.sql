@@ -1,0 +1,4 @@
+INSERT INTO M_USER (U_USERNAME, U_PASSWORD, U_ALIAS) VALUES ('Tobias', 'tbs43!ll', 'taubsi');
+INSERT INTO M_USER (U_USERNAME, U_PASSWORD, U_ALIAS) VALUES ('Moritz', 'rtz12?bb', '5Mo5');
+
+INSERT INTO M_GAME (G_WINNER, G_LOSER) VALUES (1, 2); -- USER_ONE: Tobias -> id 1, USER_TWO: Moritz -> id 2

@@ -4,3 +4,23 @@ CREATE TABLE M_USER (
     u_password VARCHAR(40),
     u_alias    VARCHAR(40)
 );
+
+CREATE TABLE M_GAME (
+    g_id INTEGER NOT NULL CONSTRAINT G_PK PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    g_winner INTEGER NOT NULL CONSTRAINT G_U_Winner_FK REFERENCES M_USER(u_id),
+    g_loser INTEGER NOT NULL CONSTRAINT G_U_Loser_FK REFERENCES M_USER(u_id)
+);
+
+CREATE TABLE M_Move (
+                        m_id INTEGER NOT NULL CONSTRAINT M_PK PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+                        m_fx INTEGER NOT NULL,
+                        m_fy INTEGER NOT NULL,
+                        m_tx INTEGER NOT NULL,
+                        m_ty INTEGER NOT NULL
+);
+
+CREATE TABLE M_REPLAY (
+    r_position INTEGER NOT NULL,
+    r_game INTEGER NOT NULL CONSTRAINT R_GAME_FK REFERENCES M_GAME(g_id),
+    r_move INTEGER NOT NULL CONSTRAINT R_Move_FK REFERENCES M_Move(m_id)
+);

@@ -57,7 +57,7 @@ public class LoginHelper {
         }
 
         try (Connection connection = dataSource.getConnection()) {
-            String sql = "SELECT COUNT(*) as \"cnt\" FROM M_USER WHERE UPPER(U_USERNAME) = ? OR UPPER(U_ALIAS) = ?";
+            String sql = "SELECT COUNT(*) as 'cnt' FROM M_USER WHERE UPPER(U_USERNAME) = ? OR UPPER(U_ALIAS) = ?";
 
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, username.toUpperCase());
