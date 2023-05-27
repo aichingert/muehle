@@ -14,7 +14,8 @@ public class LoginHelper {
     private final int MIN_USERNAME_LENGTH = 3;
     private final int MIN_PASSWORD_LENGTH = 8;
     private DataSource dataSource = Database.getDataSource();
-    private Long currentUser;
+    private String currentUser;
+    private Long currentUserId;
     private static LoginHelper instance;
 
     public static LoginHelper getInstance() {
@@ -29,16 +30,17 @@ public class LoginHelper {
 
     public boolean isValidUser(String username, String password) {
         try (Connection connection = dataSource.getConnection()) {
-            String sql = "SELECT U_ID FROM M_USER WHERE UPPER(U_USERNAME) = ? AND U_PASSWORD = ?";
+            String sql = "SELECT U_ID, U_USERNAME FROM M_USER WHERE UPPER(U_USERNAME) = ? AND U_PASSWORD = ?";
 
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, username.toUpperCase());
-            preparedStatement.setString(2, password.toUpperCase());
+            preparedStatement.setString(2, password);
 
             ResultSet result = preparedStatement.executeQuery();
 
             if (result.next()) {
-                this.currentUser = result.getLong("U_ID");
+                this.currentUserId = result.getLong("U_ID");
+                this.currentUser = result.getString("U_USERNAME");
             } else {
                 return false;
             }
@@ -57,7 +59,7 @@ public class LoginHelper {
         }
 
         try (Connection connection = dataSource.getConnection()) {
-            String sql = "SELECT COUNT(*) as 'cnt' FROM M_USER WHERE UPPER(U_USERNAME) = ? OR UPPER(U_ALIAS) = ?";
+            String sql = "SELECT COUNT(*) as \"cnt\" FROM M_USER WHERE UPPER(U_USERNAME) = ? OR UPPER(U_ALIAS) = ?";
 
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, username.toUpperCase());
@@ -79,7 +81,10 @@ public class LoginHelper {
         return LoginResult.SUCCESS;
     }
 
-    public Long getCurrentUser() {
+    public String getCurrentUser() {
         return currentUser;
+    }
+    public Long getCurrentUserId() {
+        return currentUserId;
     }
 }

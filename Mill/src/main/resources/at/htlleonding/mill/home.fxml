@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<HBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="at.htlleonding.mill.controller.HomeController">
+
+    <VBox alignment="CENTER_LEFT" spacing="20" prefHeight="200" minHeight="200" maxHeight="200" prefWidth="100" minWidth="100" maxWidth="100">
+        <Label alignment="TOP_CENTER" fx:id="aliasLabel"/>
+        <Button alignment="CENTER" fx:id="playButton" onAction="#onBtnPlay">Play</Button>
+        <Button alignment="CENTER" fx:id="botBtn">Bot</Button>
+        <Button alignment="CENTER" fx:id="replayBtn">Replay</Button>
+    </VBox>
+
+    <VBox alignment="CENTER" spacing="20">
+        <ListView fx:id="gamesLv" onMouseClicked="#onClickGamesLv"/>
+    </VBox>
+
+    <VBox alignment="CENTER_RIGHT" spacing="20">
+        <ListView fx:id="leaderboardLv"/>
+    </VBox>
+</HBox>

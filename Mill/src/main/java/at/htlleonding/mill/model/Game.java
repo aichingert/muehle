@@ -1,14 +1,17 @@
 package at.htlleonding.mill.model;
 
+import at.htlleonding.mill.db.UserRepository;
+import at.htlleonding.mill.model.helper.LoginHelper;
+
 public class Game {
     Long gameId;
-    Long user1Id;
-    Long user2Id;
+    Long winnerId;
+    Long loserId;
 
-    public Game(Long gameId, Long user1Id, Long user2Id) {
+    public Game(Long gameId, Long winnerId, Long loserId) {
         this.gameId = gameId;
-        this.user1Id = user1Id;
-        this.user2Id = user2Id;
+        this.winnerId = winnerId;
+        this.loserId = loserId;
     }
 
     public Long getGameId() {
@@ -19,19 +22,29 @@ public class Game {
         this.gameId = gameId;
     }
 
-    public Long getUser1Id() {
-        return user1Id;
+    public Long getWinnerId() {
+        return winnerId;
     }
 
-    public void setUser1Id(Long user1Id) {
-        this.user1Id = user1Id;
+    public void setWinnerId(Long winnerId) {
+        this.winnerId = winnerId;
     }
 
-    public Long getUser2Id() {
-        return user2Id;
+    public Long getLoserId() {
+        return loserId;
     }
 
-    public void setUser2Id(Long user2Id) {
-        this.user2Id = user2Id;
+    public void setLoserId(Long loserId) {
+        this.loserId = loserId;
+    }
+
+    @Override
+    public String toString() {
+        UserRepository userRepository = new UserRepository();
+
+        if (LoginHelper.getInstance().getCurrentUserId().equals(winnerId)) {
+            return "WIN against " + userRepository.findById(loserId).getUsername();
+        }
+        return "LOSE against " + userRepository.findById(winnerId).getUsername();
     }
 }
