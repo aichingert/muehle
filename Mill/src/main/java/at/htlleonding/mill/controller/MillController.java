@@ -44,7 +44,7 @@ public class MillController {
                     return;
                 }
 
-                this.getPieceFromSelectedCoordinates(x, y);
+                this.currentlySelected = gameBoard.getPieceFromSelectedCoordinates(x, y, game.getCurrentPlayerColor() == 1 ? Color.WHITE : Color.GRAY);
 
                 if (this.currentlySelected != null) {
                     this.currentlySelected.setFill(Color.RED);
@@ -88,20 +88,6 @@ public class MillController {
         this.currentlySelected = null;
         drawCircleAtPos(to);
         game.switchTurn();
-    }
-
-    private void getPieceFromSelectedCoordinates(double x, double y) {
-        this.currentlySelected = this.gameBoard.getChildren().stream()
-                .filter(e -> e.getClass().equals(Circle.class))
-                .map(c -> (Circle)c)
-                .filter(c -> checkIfCircleIsInBounds(c.getCenterX(), c.getCenterY(), c.getFill(), x, y))
-                .findFirst().orElse(null);
-    }
-
-    private boolean checkIfCircleIsInBounds(double cX, double cY, Paint c, double x, double y) {
-        return cX + GameBoard.OFFSET > x && cX - GameBoard.OFFSET < x
-                && cY + GameBoard.OFFSET > y && cY - GameBoard.OFFSET < y
-                && c.equals(game.getCurrentPlayerColor() == 1 ? Color.WHITE : Color.GRAY);
     }
 
     private void drawCircleAtPos(Position pos) {

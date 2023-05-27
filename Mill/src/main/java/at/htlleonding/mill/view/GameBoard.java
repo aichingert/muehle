@@ -3,6 +3,7 @@ package at.htlleonding.mill.view;
 import at.htlleonding.mill.model.helper.Position;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.util.Pair;
@@ -90,6 +91,20 @@ public class GameBoard extends Pane {
         }
 
         return false;
+    }
+
+    public Circle getPieceFromSelectedCoordinates(double x, double y, Color playerColor) {
+        return this.getChildren().stream()
+                .filter(e -> e.getClass().equals(Circle.class))
+                .map(c -> (Circle)c)
+                .filter(c -> checkIfCircleIsInBounds(c.getCenterX(), c.getCenterY(), c.getFill(), x, y, playerColor))
+                .findFirst().orElse(null);
+    }
+
+    public boolean checkIfCircleIsInBounds(double cX, double cY, Paint c, double x, double y, Color playerColor) {
+        return cX + GameBoard.OFFSET > x && cX - GameBoard.OFFSET < x
+                && cY + GameBoard.OFFSET > y && cY - GameBoard.OFFSET < y
+                && c.equals(playerColor);
     }
 
     public Position convertCoordinateToPosition(double x, double y) {

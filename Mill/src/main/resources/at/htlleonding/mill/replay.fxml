@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
-<?import javafx.geometry.Insets?>
 <?import at.htlleonding.mill.view.GameBoard?>
-
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
       fx:controller="at.htlleonding.mill.controller.ReplayController">
     <padding>
@@ -18,7 +14,7 @@
     <GameBoard fx:id="gameBoard" maxHeight="400" maxWidth="400" minHeight="400" minWidth="400" />
 
     <HBox alignment="CENTER" spacing="40.0">
-        <Button text="Back" />
-        <Button text="Next" />
+        <Button text="Back" onAction="#previousMove"/>
+        <Button text="Next" onAction="#nextMove"/>
     </HBox>
 </VBox>

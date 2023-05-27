@@ -13,10 +13,10 @@ CREATE TABLE M_GAME (
 
 CREATE TABLE M_Move (
                         m_id INTEGER NOT NULL CONSTRAINT M_PK PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-                        m_fx INTEGER NOT NULL,
-                        m_fy INTEGER NOT NULL,
-                        m_tx INTEGER NOT NULL,
-                        m_ty INTEGER NOT NULL
+                        m_fx DOUBLE NOT NULL,
+                        m_fy DOUBLE NOT NULL,
+                        m_tx DOUBLE NOT NULL,
+                        m_ty DOUBLE NOT NULL
 );
 
 CREATE TABLE M_REPLAY (

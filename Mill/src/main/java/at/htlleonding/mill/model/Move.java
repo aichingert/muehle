@@ -2,12 +2,12 @@ package at.htlleonding.mill.model;
 
 public class Move {
     private Long id;
-    private int fx;
-    private int fy;
-    private int tx;
-    private int ty;
+    private double fx;
+    private double fy;
+    private double tx;
+    private double ty;
 
-    public Move(int fx, int fy, int tx, int ty) {
+    public Move(double fx, double fy, double tx, double ty) {
         this.fx = fx;
         this.fy = fy;
         this.tx = tx;
@@ -22,31 +22,31 @@ public class Move {
         this.id = id;
     }
 
-    public int getFx() {
+    public double getFx() {
         return fx;
     }
 
-    public void setFx(int fx) {
+    public void setFx(double fx) {
         this.fx = fx;
     }
 
-    public int getFy() {
+    public double getFy() {
         return fy;
     }
 
-    public void setFy(int fy) {
+    public void setFy(double fy) {
         this.fy = fy;
     }
 
-    public int getTx() {
+    public double getTx() {
         return tx;
     }
 
-    public void setTx(int tx) {
+    public void setTx(double tx) {
         this.tx = tx;
     }
 
-    public int getTy() {
+    public double getTy() {
         return ty;
     }
 
