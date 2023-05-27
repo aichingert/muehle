@@ -49,7 +49,7 @@ public class GameBoard extends Pane {
                     double x = START + col * ((3 - dimension) * A_SIXTH) + dimension * A_SIXTH;
                     double y = START + row * ((3 - dimension) * A_SIXTH) + dimension * A_SIXTH;
                     circleCoordinates.add(new Pair<>(x,y));
-                    drawIntersection(x, y, Color.BLACK);
+                    drawIntersection(x, y, Color.BLACK, 3);
                 }
             }
         }
@@ -74,9 +74,10 @@ public class GameBoard extends Pane {
         getChildren().addAll(leftToMiddleRight, topToMiddleBottom, rightToMiddleLeft, bottomToMiddleTop);
     }
 
-    public void drawIntersection(double x, double y, Color color) {
-        Circle intersection = new Circle(x, y, 3);
+    public void drawIntersection(double x, double y, Color color, double radius) {
+        Circle intersection = new Circle(x, y, radius);
         intersection.setFill(color);
+        intersection.setStroke(Color.BLACK);
         getChildren().add(intersection);
     }
 

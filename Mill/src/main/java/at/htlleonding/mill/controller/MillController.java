@@ -112,17 +112,10 @@ public class MillController {
         double y = 50 + pos.getY() * ((3 - pos.getZ()) * aSixth) + pos.getZ() * aSixth;
 
         if (game.getCurrentPlayerColor() == 1) {
-            drawIntersection(x, y, Color.WHITE);
+            gameBoard.drawIntersection(x, y, Color.WHITE, 9);
         }
-        else if (game.getCurrentPlayerColor() == 2) {
-            drawIntersection(x, y, Color.GRAY);
+        else {
+            gameBoard.drawIntersection(x, y, Color.GRAY, 9);
         }
-    }
-
-    private void drawIntersection(double x, double y, Color color) {
-        Circle intersection = new Circle(x, y, 9);
-        intersection.setFill(color);
-        intersection.setStroke(Color.BLACK);
-        gameBoard.getChildren().add(intersection);
     }
 }
