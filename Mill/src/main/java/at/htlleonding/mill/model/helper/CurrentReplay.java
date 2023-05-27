@@ -1,6 +1,6 @@
 package at.htlleonding.mill.model.helper;
 
-import at.htlleonding.mill.db.ReplayRepository;
+import at.htlleonding.mill.repositories.ReplayRepository;
 import at.htlleonding.mill.model.Replay;
 
 import java.util.Comparator;

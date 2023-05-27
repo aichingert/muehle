@@ -1,7 +1,7 @@
 package at.htlleonding.mill.controller;
 
-import at.htlleonding.mill.db.GameRepository;
-import at.htlleonding.mill.db.UserRepository;
+import at.htlleonding.mill.repositories.GameRepository;
+import at.htlleonding.mill.repositories.UserRepository;
 import at.htlleonding.mill.model.Game;
 import at.htlleonding.mill.model.User;
 import at.htlleonding.mill.model.helper.LoginHelper;

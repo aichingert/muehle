@@ -1,7 +1,7 @@
 package at.htlleonding.mill.model.helper;
 
-import at.htlleonding.mill.db.Database;
-import at.htlleonding.mill.db.UserRepository;
+import at.htlleonding.mill.repositories.Database;
+import at.htlleonding.mill.repositories.UserRepository;
 import at.htlleonding.mill.model.User;
 
 import javax.sql.DataSource;

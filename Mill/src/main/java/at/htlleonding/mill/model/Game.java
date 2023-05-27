@@ -1,6 +1,6 @@
 package at.htlleonding.mill.model;
 
-import at.htlleonding.mill.db.UserRepository;
+import at.htlleonding.mill.repositories.UserRepository;
 import at.htlleonding.mill.model.helper.LoginHelper;
 
 public class Game {

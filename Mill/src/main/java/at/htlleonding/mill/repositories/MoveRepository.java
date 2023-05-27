@@ -1,4 +1,4 @@
-package at.htlleonding.mill.db;
+package at.htlleonding.mill.repositories;
 
 import at.htlleonding.mill.model.Move;
 
