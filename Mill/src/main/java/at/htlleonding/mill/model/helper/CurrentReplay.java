@@ -10,14 +10,12 @@ public class CurrentReplay {
     private Long gameId;
     private List<Replay> moves;
     private int counter;
-    private int currentPlayerColor;
     private static CurrentReplay instance = null;
 
     private CurrentReplay() {
         gameId = null;
         moves = null;
         counter = 0;
-        currentPlayerColor = -1;
     }
 
     public static CurrentReplay getInstance() {
@@ -39,36 +37,27 @@ public class CurrentReplay {
     }
 
     public Replay getNext() {
-        if (this.counter != this.moves.size()-1) {
-            this.currentPlayerColor += 1;
+        Replay replay = null;
+
+        if (this.counter < this.moves.size()) {
+            replay = this.moves.get(this.counter);
         }
 
-        Replay replay = this.moves.get(this.counter);
-        this.counter = Math.min(this.counter + 1, this.moves.size()-1);
+        this.counter = Math.min(this.counter + 1, this.moves.size());
         return replay;
     }
 
     public Replay getPrevious() {
-        if (this.counter != 0 || this.currentPlayerColor == -1) {
-            this.currentPlayerColor -= 1;
-        }
-
-        Replay replay = this.moves.get(this.counter);
         this.counter = Math.max(this.counter - 1, 0);
-        return replay;
+        return this.moves.get(this.counter);
     }
 
     public void setGameId(Long gameId) {
         this.gameId = gameId;
         this.counter = 0;
-        this.currentPlayerColor = -1;
     }
 
     public int getCounter() {
         return this.counter;
-    }
-
-    public int getCurrentPlayerColor() {
-        return currentPlayerColor;
     }
 }
