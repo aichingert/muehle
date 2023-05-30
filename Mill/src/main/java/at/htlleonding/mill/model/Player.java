@@ -6,7 +6,6 @@ public class Player {
     private final int color;
     private boolean isPlayerTurn;
 
-
     public Player(int color) {
         this.amountOfPieces = 0;
         this.color = color;

@@ -105,4 +105,8 @@ public class Mill {
         cp.board = this.board;
         return cp;
     }
+
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
+    }
 }

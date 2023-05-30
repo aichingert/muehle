@@ -5,8 +5,10 @@ package at.htlleonding.mill.model.helper;
 * Description: Implements the game logic, the moves a piece can make
  */
 
+import at.htlleonding.mill.model.GameState;
 import at.htlleonding.mill.model.Mill;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,10 +77,10 @@ public class Logic {
      * @return true if the move activates a mill
      */
     public static boolean activatesMill(Mill game, Position from, Position to) {
-        int color = game.getValueAt(from);
+        int color = game.getCurrentPlayerColor();
         boolean[] doesActivate = {true,true,true};
 
-        if (game.getValueAt(from) == 0 || !Logic.getMoves(game, from).contains(to)) {
+        if (game.getGameState() != GameState.SET && (game.getValueAt(from) == 0 || !Logic.getMoves(game, from).contains(to))) {
             return false;
         }
 
@@ -89,6 +91,8 @@ public class Logic {
                     doesActivate[0] = false;
                 }
             }
+        } else {
+            doesActivate[0] = false;
         }
 
         // Check for default Y and X if we get a mill
@@ -103,5 +107,97 @@ public class Logic {
         }
 
         return doesActivate[0] || doesActivate[1] || doesActivate[2];
+    }
+
+    /**
+     * @param game
+     * @return
+     */
+    public static List<Position> getTakeablePieces(Mill game, int oppositeColor) {
+        List<Position> takeablePositions = new ArrayList<>();
+        int[] rows;
+        int[] cols;
+
+        for (int z = 0; z < game.BOARD_SIZE; z++) {
+            rows = new int[game.BOARD_SIZE];
+            cols = new int[game.BOARD_SIZE];
+
+            for (int x = 0; x < game.BOARD_SIZE; x++) {
+                for (int y = 0; y < game.BOARD_SIZE; y++) {
+                    if (game.getValueAt(new Position(x, y, z)) == oppositeColor) {
+                        if (y != 1)
+                            rows[y] += 1;
+                        if (x != 1)
+                            cols[x] += 1;
+                    }
+                }
+            }
+
+            for (int j = 0; j < game.BOARD_SIZE; j++) {
+                System.out.println(rows[j]);
+                if (rows[j] != game.BOARD_SIZE && cols[j] != game.BOARD_SIZE) {
+                    for (int k = 0; k < game.BOARD_SIZE; k++) {
+                        Position position = new Position(k, j, z);
+                        if (game.getValueAt(position) == oppositeColor) {
+                            takeablePositions.add(position);
+                        }
+                        position = new Position(j, k, z);
+                        if (game.getValueAt(position) == oppositeColor) {
+                            takeablePositions.add(position);
+                        }
+                    }
+                } else if (rows[j] != game.BOARD_SIZE) {
+                    for (int k = 0; k < game.BOARD_SIZE; k++) {
+                        takeablePositions.add(new Position(k, j, z));
+                    }
+                } else if (cols[j] != game.BOARD_SIZE) {
+                    for (int k = 0; k < game.BOARD_SIZE; k++) {
+                        takeablePositions.add(new Position(j, k, z));
+                    }
+                }
+            }
+        }
+
+        rows = new int[]{0, 0};
+        cols = new int[]{0,0};
+
+        for (int z = 0; z < game.BOARD_SIZE; z++) {
+            if (game.getValueAt(new Position(2, 1, z)) == oppositeColor) {
+                rows[1] += 1;
+            }
+            if (game.getValueAt(new Position(0, 1, z)) == oppositeColor) {
+                rows[0] += 1;
+            }
+            if (game.getValueAt(new Position(1, 2, z)) == oppositeColor) {
+                cols[1] += 1;
+            }
+            if (game.getValueAt(new Position(1, 0, z)) == oppositeColor) {
+                cols[0] += 1;
+            }
+        }
+
+        for (int i = 0; i < 2; i++) {
+            if (rows[i] == game.BOARD_SIZE && cols[i] == game.BOARD_SIZE) {
+                for (int z = 0; z < game.BOARD_SIZE; z++) {
+                    takeablePositions.add(new Position(i == 1 ? 2 : 0, 1, z));
+                    takeablePositions.add(new Position(1, i == 1 ? 2 : 0, z));
+                }
+            } else if (rows[i] == game.BOARD_SIZE) {
+                for (int z = 0; z < game.BOARD_SIZE; z++) {
+                    takeablePositions.add(new Position(i == 1 ? 2 : 0, 1, z));
+                }
+            } else if (cols[i] == game.BOARD_SIZE) {
+                for (int z = 0; z < game.BOARD_SIZE; z++) {
+                    takeablePositions.add(new Position(1, i == 1 ? 2 : 0, z));
+                }
+            }
+        }
+
+        System.out.println("Hello");
+        for (Position p : takeablePositions) {
+            System.out.println(p);
+        }
+
+        return takeablePositions;
     }
 }
