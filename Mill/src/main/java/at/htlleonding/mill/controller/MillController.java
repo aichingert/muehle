@@ -1,18 +1,20 @@
 package at.htlleonding.mill.controller;
 
-import at.htlleonding.mill.bot.BruteForce;
 import at.htlleonding.mill.model.GameState;
 import at.htlleonding.mill.model.Mill;
+import at.htlleonding.mill.model.Move;
 import at.htlleonding.mill.model.Player;
 import at.htlleonding.mill.model.helper.Logic;
 import at.htlleonding.mill.model.helper.Position;
+import at.htlleonding.mill.repositories.MoveRepository;
 import at.htlleonding.mill.view.GameBoard;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
+
+import java.util.List;
 
 public class MillController {
     Mill game;
@@ -23,14 +25,19 @@ public class MillController {
     private Label lblCurPlayer;
 
     private Circle currentlySelected;
-    private boolean isHighlighted;
+    private List<Position> takeablePieces;
 
     @FXML
     private void initialize() {
         boolean playerOneIsWhite = Math.random() > 0.5;
         this.game = new Mill(new Player(playerOneIsWhite ? 1 : 2), new Player(playerOneIsWhite ? 2 : 1));
         this.currentlySelected = null;
-        this.isHighlighted = false;
+        this.takeablePieces = null;
+
+        MoveRepository moveRepository = new MoveRepository();
+        Move move = new Move(3.0, 0.0, 0.0, 0.0);
+
+        moveRepository.insert(move);
     }
 
     @FXML

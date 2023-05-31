@@ -42,6 +42,10 @@ public class MoveRepository implements Persistent<Move> {
 
     @Override
     public void insert(Move move) {
+        if (checkIfContained(move)) {
+            return;
+        }
+
         try (Connection connection = dataSource.getConnection()) {
             String sql = "INSERT INTO M_MOVE (M_FX, M_FY,M_TX, M_TY) VALUES (?,?,?,?)";
 
@@ -134,5 +138,35 @@ public class MoveRepository implements Persistent<Move> {
         }
 
         return move;
+    }
+
+    private boolean checkIfContained(Move move) {
+        try (Connection connection = dataSource.getConnection()) {
+            String sql = "SELECT COUNT(*) as \"cnt\" FROM M_MOVE WHERE M_FX=? AND M_FY=? AND M_TX=? AND M_TY=?";
+
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setDouble(1, move.getFx());
+            statement.setDouble(2, move.getFy());
+            statement.setDouble(3, move.getTx());
+            statement.setDouble(4, move.getTy());
+
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                return resultSet.getInt("cnt") == 1;
+            }
+
+            try (ResultSet keys = statement.getGeneratedKeys()) {
+                if (keys.next()) {
+                    move.setId(keys.getLong(1));
+                } else {
+                    throw new SQLException("Insert into M_MOVE failed, no ID obtained");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 }
