@@ -8,7 +8,6 @@ package at.htlleonding.mill.model.helper;
 import at.htlleonding.mill.model.GameState;
 import at.htlleonding.mill.model.Mill;
 
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -115,89 +114,55 @@ public class Logic {
      */
     public static List<Position> getTakeablePieces(Mill game, int oppositeColor) {
         List<Position> takeablePositions = new ArrayList<>();
-        int[] rows;
-        int[] cols;
-
+        
         for (int z = 0; z < game.BOARD_SIZE; z++) {
-            rows = new int[game.BOARD_SIZE];
-            cols = new int[game.BOARD_SIZE];
+            for (int y = 0; y < game.BOARD_SIZE; y++) {
+                for (int x = 0; x < game.BOARD_SIZE; x++) {
+                    if ((y == 1 && x == 1) || game.getValueAt(new Position(x, y, z)) != oppositeColor)
+                        continue;
+                    
+                    if (x == 1) {
+                        if (game.getValueAt(new Position(0, y, z)) == oppositeColor && game.getValueAt(new Position(2, y, z)) == oppositeColor)
+                            continue;
 
-            for (int x = 0; x < game.BOARD_SIZE; x++) {
-                for (int y = 0; y < game.BOARD_SIZE; y++) {
-                    if (game.getValueAt(new Position(x, y, z)) == oppositeColor) {
-                        if (y != 1)
-                            rows[y] += 1;
-                        if (x != 1)
-                            cols[x] += 1;
-                    }
-                }
-            }
+                        isMill(game, oppositeColor, takeablePositions, z, y, x);
+                    } else if (y == 1) {
+                        if (game.getValueAt(new Position(x, 0, z)) == oppositeColor && game.getValueAt(new Position(x, 2, z)) == oppositeColor)
+                            continue;
 
-            for (int j = 0; j < game.BOARD_SIZE; j++) {
-                System.out.println(rows[j]);
-                if (rows[j] != game.BOARD_SIZE && cols[j] != game.BOARD_SIZE) {
-                    for (int k = 0; k < game.BOARD_SIZE; k++) {
-                        Position position = new Position(k, j, z);
-                        if (game.getValueAt(position) == oppositeColor) {
-                            takeablePositions.add(position);
+                        isMill(game, oppositeColor, takeablePositions, z, y, x);
+                    } else {
+                        boolean row = true;
+                        boolean col = true;
+
+                        for (int i = 0; i < game.BOARD_SIZE; i++) {
+                            Position r = new Position(i, y, z);
+                            Position c = new Position(x, i, z);
+
+                            if (game.getValueAt(r) != oppositeColor)
+                                row = false;
+                            else if (game.getValueAt(c) != oppositeColor)
+                                col = false;
                         }
-                        position = new Position(j, k, z);
-                        if (game.getValueAt(position) == oppositeColor) {
-                            takeablePositions.add(position);
-                        }
-                    }
-                } else if (rows[j] != game.BOARD_SIZE) {
-                    for (int k = 0; k < game.BOARD_SIZE; k++) {
-                        takeablePositions.add(new Position(k, j, z));
-                    }
-                } else if (cols[j] != game.BOARD_SIZE) {
-                    for (int k = 0; k < game.BOARD_SIZE; k++) {
-                        takeablePositions.add(new Position(j, k, z));
+
+                        if (!(row || col))
+                            takeablePositions.add(new Position(x, y, z));
                     }
                 }
             }
-        }
-
-        rows = new int[]{0, 0};
-        cols = new int[]{0,0};
-
-        for (int z = 0; z < game.BOARD_SIZE; z++) {
-            if (game.getValueAt(new Position(2, 1, z)) == oppositeColor) {
-                rows[1] += 1;
-            }
-            if (game.getValueAt(new Position(0, 1, z)) == oppositeColor) {
-                rows[0] += 1;
-            }
-            if (game.getValueAt(new Position(1, 2, z)) == oppositeColor) {
-                cols[1] += 1;
-            }
-            if (game.getValueAt(new Position(1, 0, z)) == oppositeColor) {
-                cols[0] += 1;
-            }
-        }
-
-        for (int i = 0; i < 2; i++) {
-            if (rows[i] == game.BOARD_SIZE && cols[i] == game.BOARD_SIZE) {
-                for (int z = 0; z < game.BOARD_SIZE; z++) {
-                    takeablePositions.add(new Position(i == 1 ? 2 : 0, 1, z));
-                    takeablePositions.add(new Position(1, i == 1 ? 2 : 0, z));
-                }
-            } else if (rows[i] == game.BOARD_SIZE) {
-                for (int z = 0; z < game.BOARD_SIZE; z++) {
-                    takeablePositions.add(new Position(i == 1 ? 2 : 0, 1, z));
-                }
-            } else if (cols[i] == game.BOARD_SIZE) {
-                for (int z = 0; z < game.BOARD_SIZE; z++) {
-                    takeablePositions.add(new Position(1, i == 1 ? 2 : 0, z));
-                }
-            }
-        }
-
-        System.out.println("Hello");
-        for (Position p : takeablePositions) {
-            System.out.println(p);
         }
 
         return takeablePositions;
+    }
+
+    private static void isMill(Mill game, int oppositeColor, List<Position> takeablePositions, int z, int y, int x) {
+        for (int i = 0; i < game.BOARD_SIZE; i++) {
+            Position position = new Position(x, y, i);
+
+            if (game.getValueAt(position) != oppositeColor) {
+                takeablePositions.add(new Position(x, y, z));
+                break;
+            }
+        }
     }
 }
