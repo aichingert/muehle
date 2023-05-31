@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MoveRepository implements Persistent<Move> {
-    private DataSource dataSource = Database.getDataSource();
+    private final DataSource dataSource = Database.getDataSource();
 
     @Override
     public void save(Move user) {
@@ -36,7 +36,7 @@ public class MoveRepository implements Persistent<Move> {
                 throw new SQLException("Update of M_MOVE failed, no rows affected");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.fillInStackTrace();
         }
     }
 
@@ -67,7 +67,7 @@ public class MoveRepository implements Persistent<Move> {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.fillInStackTrace();
         }
     }
 
@@ -83,7 +83,7 @@ public class MoveRepository implements Persistent<Move> {
                 throw new SQLException("Deletion of M_MOVE failed, no rows affected");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.fillInStackTrace();
         }
     }
 
@@ -108,7 +108,7 @@ public class MoveRepository implements Persistent<Move> {
                 moves.add(move);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.fillInStackTrace();
         }
 
         return moves;
@@ -134,7 +134,7 @@ public class MoveRepository implements Persistent<Move> {
                 move.setId(result.getLong("M_ID"));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.fillInStackTrace();
         }
 
         return move;
@@ -164,7 +164,7 @@ public class MoveRepository implements Persistent<Move> {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.fillInStackTrace();
         }
 
         return false;

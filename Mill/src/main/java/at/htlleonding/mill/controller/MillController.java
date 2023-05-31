@@ -9,6 +9,7 @@ import at.htlleonding.mill.model.helper.Position;
 import at.htlleonding.mill.repositories.MoveRepository;
 import at.htlleonding.mill.view.GameBoard;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
@@ -66,13 +67,31 @@ public class MillController {
 
             }
             case TAKE -> {
-                game.setGameState(GameState.SET);
+                if (removeHighlightedPiece(x, y)) {
+                    changeColorFromHighlightedPieces(Color.RED, this.game.getCurrentPlayerColor() == 1 ? Color.GRAY : Color.WHITE);
+                    isTurnToSwitch = true;
+                }
             }
         }
 
         if (isTurnToSwitch) {
             game.switchTurn();
         }
+    }
+
+    private boolean removeHighlightedPiece(double x, double y) {
+        if (!gameBoard.containsCoordinate(x, y)) {
+            return false;
+        }
+
+        Position pos = gameBoard.convertCoordinateToPosition(x, y);
+
+        if (this.takeablePieces.contains(pos)) {
+            gameBoard.getChildren().remove(gameBoard.getPieceFromSelectedCoordinates(x, y, Color.RED));
+            return true;
+        }
+
+        return false;
     }
 
     private boolean setPieceAtSelectedLocation(double x, double y) {
@@ -85,6 +104,7 @@ public class MillController {
 
         if (game.setPiece(game.getCurrentPlayerColor(), pos)) {
             drawCircleAtPos(pos);
+
             if (Logic.activatesMill(game, null, pos)) {
                 highlightTakeablePieces();
                 game.setGameState(GameState.TAKE);
@@ -119,8 +139,25 @@ public class MillController {
         return true;
     }
 
+    private void changeColorFromHighlightedPieces(Color fColor, Color tColor) {
+        double boardSize = Math.min(gameBoard.getWidth(), gameBoard.getHeight()) - 2 * 50;
+        double aSixth = boardSize / 6;
+
+        this.takeablePieces.stream()
+                .map(p -> gameBoard.getPieceFromSelectedCoordinates(
+                        50 + p.getX() * ((3 - p.getZ()) * aSixth) + p.getZ() * aSixth,
+                        50 + p.getY() * ((3 - p.getZ()) * aSixth) + p.getZ() * aSixth,
+                        fColor))
+                .forEach(c -> {
+                    if (c != null)
+                        c.setFill(tColor);
+                });
+    }
+
     private void highlightTakeablePieces() {
-        Logic.getTakeablePieces(game, game.getCurrentPlayerColor() == 1 ? 2 : 1);
+        this.takeablePieces = Logic.getTakeablePieces(game, game.getCurrentPlayerColor() == 1 ? 2 : 1);
+
+        changeColorFromHighlightedPieces(this.game.getCurrentPlayerColor() == 1 ? Color.GRAY : Color.WHITE, Color.RED);
     }
 
     private void drawCircleAtPos(Position pos) {

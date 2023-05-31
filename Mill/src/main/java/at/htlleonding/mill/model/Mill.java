@@ -84,6 +84,7 @@ public class Mill {
         this.moveCounter += 1;
         this.playerOne.setPlayerTurn(!this.playerOne.isPlayerTurn());
         this.playerTwo.setPlayerTurn(!this.playerTwo.isPlayerTurn());
+        this.updateGameState();
     }
 
     public GameState getGameState() {
@@ -92,6 +93,7 @@ public class Mill {
 
     public void updateGameState() {
         if (this.moveCounter < 2 * Player.MAX_PIECES) {
+            this.gameState = GameState.SET;
             return;
         }
 
