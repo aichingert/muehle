@@ -136,7 +136,14 @@ public class MillController {
         gameBoard.getChildren().remove(this.currentlySelected);
         this.currentlySelected = null;
         drawCircleAtPos(to);
-        return true;
+
+        if (Logic.activatesMill(this.game, from, to)) {
+            game.setGameState(GameState.TAKE);
+            highlightTakeablePieces();
+            return false;
+        } else {
+            return true;
+        }
     }
 
     private void changeColorFromHighlightedPieces(Color fColor, Color tColor) {

@@ -77,12 +77,7 @@ public class Logic {
      */
     public static boolean activatesMill(Mill game, Position from, Position to) {
         int color = game.getCurrentPlayerColor();
-        System.out.println(color);
         boolean[] doesActivate = {true,true,true};
-
-        if (game.getGameState() != GameState.SET && (game.getValueAt(from) == 0 || !Logic.getMoves(game, from).contains(to))) {
-            return false;
-        }
 
         // If we are able to switch the dimension then check if we get a mill there
         if (isAbleToSwitchDimensions(to)) {

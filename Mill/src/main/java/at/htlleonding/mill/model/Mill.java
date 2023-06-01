@@ -2,8 +2,6 @@ package at.htlleonding.mill.model;
 
 import at.htlleonding.mill.model.helper.Position;
 import at.htlleonding.mill.model.helper.Logic;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
 
 import java.util.List;
 
@@ -46,13 +44,10 @@ public class Mill {
         return true;
     }
 
-    public boolean removePiece(Position position) {
+    public void removePiece(Position position) {
         if (gameState == GameState.TAKE && getValueAt(position) == (getCurrentPlayerColor() == 1 ? 2 : 1)) {
             this.board[position.getZ()][position.getY()][position.getX()] = 0;
-            return true;
         }
-
-        return false;
     }
 
     public boolean movePiece(int color, Position from, Position to) {
