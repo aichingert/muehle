@@ -9,7 +9,6 @@ import at.htlleonding.mill.model.helper.Position;
 import at.htlleonding.mill.repositories.MoveRepository;
 import at.htlleonding.mill.view.GameBoard;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
@@ -88,6 +87,7 @@ public class MillController {
 
         if (this.takeablePieces.contains(pos)) {
             gameBoard.getChildren().remove(gameBoard.getPieceFromSelectedCoordinates(x, y, Color.RED));
+            game.removePiece(pos);
             return true;
         }
 

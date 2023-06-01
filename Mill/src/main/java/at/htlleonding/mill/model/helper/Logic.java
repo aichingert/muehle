@@ -142,7 +142,7 @@ public class Logic {
 
                             if (game.getValueAt(r) != oppositeColor)
                                 row = false;
-                            else if (game.getValueAt(c) != oppositeColor)
+                            if (game.getValueAt(c) != oppositeColor)
                                 col = false;
                         }
 

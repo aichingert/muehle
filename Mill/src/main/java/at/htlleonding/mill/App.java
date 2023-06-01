@@ -16,7 +16,7 @@ public class App extends Application {
         Scene scene = new Scene(loadFXML("mill"), 800, 800);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Muehle - Nine Men's Morris");
-        primaryStage.getIcons().add(loadIcon("icon"));
+        primaryStage.getIcons().add(loadIcon());
         primaryStage.show();
     }
 
@@ -25,8 +25,8 @@ public class App extends Application {
         return fxmlLoader.load();
     }
 
-    private static Image loadIcon(String iconName) {
-        return new Image(Objects.requireNonNull(App.class.getResourceAsStream(iconName + ".png")));
+    private static Image loadIcon() {
+        return new Image(Objects.requireNonNull(App.class.getResourceAsStream("icon.png")));
     }
 
     public static void main(String[] args) {

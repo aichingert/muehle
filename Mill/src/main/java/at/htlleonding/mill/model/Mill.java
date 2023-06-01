@@ -46,6 +46,15 @@ public class Mill {
         return true;
     }
 
+    public boolean removePiece(Position position) {
+        if (gameState == GameState.TAKE && getValueAt(position) == (getCurrentPlayerColor() == 1 ? 2 : 1)) {
+            this.board[position.getZ()][position.getY()][position.getX()] = 0;
+            return true;
+        }
+
+        return false;
+    }
+
     public boolean movePiece(int color, Position from, Position to) {
         // Note: There is no need to check if the current position is the same color as the piece we want to move
         // because we can only select pieces that have our color
