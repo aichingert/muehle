@@ -16,6 +16,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 import static at.htlleonding.mill.App.loadFXML;
 
@@ -31,6 +34,8 @@ public class HomeController {
 
     @FXML
     private void initialize() {
+        //aliasLabel.getScene().getStylesheets().add("style.css");
+
         replayBtn.setDisable(true);
         aliasLabel.setText(LoginHelper.getInstance().getCurrentUser());
 
@@ -38,8 +43,11 @@ public class HomeController {
         gamesLv.setItems(FXCollections.observableList(gameRepository.findAllGamesByUserId(LoginHelper.getInstance().getCurrentUserId())));
 
         UserRepository userRepository = new UserRepository();
-        leaderboardLv.setItems(FXCollections.observableList(userRepository.findAll()));
-
+        List<User> allUsers = userRepository.findAll();
+        User currentUser = allUsers.stream().filter(u -> u.getId().equals(LoginHelper.getInstance().getCurrentUserId())).findFirst().get();
+        List<User> topThree = new ArrayList<>(allUsers.stream().limit(3).toList());
+        topThree.add(currentUser);
+        leaderboardLv.setItems(FXCollections.observableList(topThree));
     }
 
     @FXML
@@ -53,5 +61,11 @@ public class HomeController {
         if (!gamesLv.getSelectionModel().isEmpty()) {
             replayBtn.setDisable(false);
         }
+    }
+
+    @FXML
+    private void onBtnLogout(ActionEvent actionEvent) throws IOException {
+        Stage stage = (Stage) aliasLabel.getScene().getWindow();
+        stage.setScene(new Scene(loadFXML("login"), 800, 800));
     }
 }

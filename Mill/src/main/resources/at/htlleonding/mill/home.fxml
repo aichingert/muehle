@@ -6,21 +6,32 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<HBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="at.htlleonding.mill.controller.HomeController">
+<VBox  spacing="120" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="at.htlleonding.mill.controller.HomeController"
+        stylesheets="/style.css">
 
-    <VBox alignment="CENTER_LEFT" spacing="20" prefHeight="200" minHeight="200" maxHeight="200" prefWidth="100" minWidth="100" maxWidth="100">
-        <Label alignment="TOP_CENTER" fx:id="aliasLabel"/>
-        <Button alignment="CENTER" fx:id="playButton" onAction="#onBtnPlay">Play</Button>
-        <Button alignment="CENTER" fx:id="botBtn">Bot</Button>
-        <Button alignment="CENTER" fx:id="replayBtn">Replay</Button>
-    </VBox>
+    <Button fx:id="logoutBtn" onAction="#onBtnLogout">Logout</Button>
 
-    <VBox alignment="CENTER" spacing="20">
-        <ListView fx:id="gamesLv" onMouseClicked="#onClickGamesLv"/>
-    </VBox>
+    <VBox styleClass="fill-page" alignment="CENTER" spacing="20">
+        <Label styleClass="header" alignment="CENTER">Mill - Home</Label>
 
-    <VBox alignment="CENTER_RIGHT" spacing="20">
-        <ListView fx:id="leaderboardLv"/>
+        <HBox alignment="CENTER" spacing="100.0">
+            <VBox alignment="CENTER" spacing="20">
+                <Label alignment="CENTER">Your matches</Label>
+                <ListView fx:id="gamesLv" onMouseClicked="#onClickGamesLv"/>
+            </VBox>
+
+            <VBox alignment="CENTER" spacing="20" prefHeight="200" minHeight="200" maxHeight="200" prefWidth="100" minWidth="100" maxWidth="100">
+                <Label alignment="TOP_CENTER" fx:id="aliasLabel"/>
+                <Button alignment="CENTER" fx:id="playButton" onAction="#onBtnPlay">Play</Button>
+                <Button alignment="CENTER" fx:id="botBtn">Bot</Button>
+                <Button alignment="CENTER" fx:id="replayBtn">Replay</Button>
+            </VBox>
+
+            <VBox alignment="CENTER" spacing="20">
+                <Label alignment="CENTER">Leaderboard</Label>
+                <ListView fx:id="leaderboardLv"/>
+            </VBox>
+        </HBox>
     </VBox>
-</HBox>
+</VBox>

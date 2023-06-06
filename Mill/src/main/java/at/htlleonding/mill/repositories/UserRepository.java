@@ -85,6 +85,7 @@ public class UserRepository implements Persistent<User> {
     @Override
     public List<User> findAll() {
         List<User> users = new ArrayList<>();
+        int count = 1;
 
         try (Connection connection = dataSource.getConnection()) {
             String sql = "SELECT mu.* FROM M_USER mu LEFT OUTER JOIN M_GAME mg ON mu.U_ID = mg.G_WINNER GROUP BY mu.U_ID, mu.U_USERNAME, mu.U_ALIAS, mu.U_PASSWORD ORDER BY count(mg.G_WINNER) DESC";
@@ -95,11 +96,13 @@ public class UserRepository implements Persistent<User> {
                 User user = new User(
                         result.getString("U_USERNAME"),
                         result.getString("U_PASSWORD"),
-                        result.getString("U_ALIAS"));
+                        result.getString("U_ALIAS"),
+                        count);
 
                 user.setId(result.getLong("U_ID"));
 
                 users.add(user);
+                count++;
             }
         } catch (SQLException e) {
             e.printStackTrace();

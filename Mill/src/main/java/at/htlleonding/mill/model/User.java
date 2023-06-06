@@ -1,15 +1,29 @@
 package at.htlleonding.mill.model;
 
+import at.htlleonding.mill.repositories.UserRepository;
+import javafx.beans.property.SimpleIntegerProperty;
+
+import java.util.List;
+
 public class User {
     private Long id;
     private String username;
     private String password;
     private String alias;
+    private SimpleIntegerProperty currentRank;
 
     public User(String username, String password, String alias) {
         this.username = username;
         this.password = password;
         this.alias = alias;
+        currentRank = new SimpleIntegerProperty();
+    }
+
+    public User(String username, String password, String alias, int rank) {
+        this.username = username;
+        this.password = password;
+        this.alias = alias;
+        currentRank = new SimpleIntegerProperty(rank);
     }
 
     public void setId(Long id) {
@@ -46,6 +60,6 @@ public class User {
 
     @Override
     public String toString() {
-        return username;
+        return currentRank.get() + " " + username;
     }
 }
