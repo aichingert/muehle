@@ -14,6 +14,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MillController {
@@ -26,6 +27,7 @@ public class MillController {
 
     private Circle currentlySelected;
     private List<Position> takeablePieces;
+    private List<Move> movesForReplay;
 
     @FXML
     private void initialize() {
@@ -33,11 +35,7 @@ public class MillController {
         this.game = new Mill(new Player(playerOneIsWhite ? 1 : 2), new Player(playerOneIsWhite ? 2 : 1));
         this.currentlySelected = null;
         this.takeablePieces = null;
-
-        MoveRepository moveRepository = new MoveRepository();
-        Move move = new Move(3.0, 0.0, 0.0, 0.0);
-
-        moveRepository.insert(move);
+        this.movesForReplay = new ArrayList<>();
     }
 
     @FXML
@@ -47,21 +45,8 @@ public class MillController {
         boolean isTurnToSwitch = false;
 
         switch (game.getGameState()) {
-            case SET -> isTurnToSwitch = setPieceAtSelectedLocation(x, y);
-            case MOVE -> {
-                if (this.currentlySelected != null) {
-                    if (moveSelectedPieceToNextPositionOrDropIt(x, y)) {
-                        game.switchTurn();
-                    }
-                    return;
-                }
-
-                this.currentlySelected = gameBoard.getPieceFromSelectedCoordinates(x, y, game.getCurrentPlayerColor() == 1 ? Color.WHITE : Color.GRAY);
-
-                if (this.currentlySelected != null) {
-                    this.currentlySelected.setFill(Color.RED);
-                }
-            }
+            case SET  -> isTurnToSwitch = setPieceAtSelectedLocation(x, y);
+            case MOVE -> handleStateMove(x, y);
             case JUMP -> {
 
             }
@@ -76,6 +61,49 @@ public class MillController {
         if (isTurnToSwitch) {
             game.switchTurn();
         }
+    }
+
+    private void handleStateMove(double x, double y) {
+        System.out.println(this.currentlySelected);
+        if (this.currentlySelected != null && moveSelectedPieceToNextPositionOrDropIt(x, y)) {
+            game.switchTurn();
+            return;
+        }
+
+        this.currentlySelected = gameBoard.getPieceFromSelectedCoordinates(x, y, game.getCurrentPlayerColor() == 1 ? Color.WHITE : Color.GRAY);
+
+        if (this.currentlySelected != null) {
+            this.currentlySelected.setFill(Color.RED);
+        }
+    }
+
+    private boolean moveSelectedPieceToNextPositionOrDropIt(double x, double y) {
+        this.currentlySelected.setFill(this.game.getCurrentPlayerColor() == 1 ? Color.WHITE : Color.GRAY);
+
+        if (!this.gameBoard.containsCoordinate(x, y)) {
+            this.currentlySelected = null;
+            return false;
+        }
+
+        Position from = this.gameBoard.convertCoordinateToPosition(this.currentlySelected.getCenterX(), this.currentlySelected.getCenterY());
+        Position to   = this.gameBoard.convertCoordinateToPosition(x, y);
+
+        if (!game.movePiece(game.getCurrentPlayerColor(), from, to)) {
+            this.currentlySelected = null;
+            return false;
+        }
+
+        this.movesForReplay.add(new Move(this.currentlySelected.getCenterX(), this.currentlySelected.getCenterY(), x, y));
+        this.gameBoard.getChildren().remove(this.currentlySelected);
+        drawCircleAtPos(to);
+
+        if (Logic.activatesMill(this.game, from, to)) {
+            this.game.setGameState(GameState.TAKE);
+            highlightTakeablePieces();
+            return false;
+        }
+
+        return true;
     }
 
     private boolean removeHighlightedPiece(double x, double y) {
@@ -103,6 +131,7 @@ public class MillController {
         Position pos = gameBoard.convertCoordinateToPosition(x, y);
 
         if (game.setPiece(game.getCurrentPlayerColor(), pos)) {
+            this.movesForReplay.add(new Move(x, y, 0, 0));
             drawCircleAtPos(pos);
 
             if (Logic.activatesMill(game, null, pos)) {
@@ -115,35 +144,6 @@ public class MillController {
         }
 
         return isTurnToSwitch;
-    }
-
-    private boolean moveSelectedPieceToNextPositionOrDropIt(double x, double y) {
-        this.currentlySelected.setFill(game.getCurrentPlayerColor() == 1 ? Color.WHITE : Color.GRAY);
-
-        if (!gameBoard.containsCoordinate(x, y)) {
-            this.currentlySelected = null;
-            return false;
-        }
-
-        Position from = gameBoard.convertCoordinateToPosition(this.currentlySelected.getCenterX(), this.currentlySelected.getCenterY());
-        Position to = gameBoard.convertCoordinateToPosition(x, y);
-
-        if (!game.movePiece(game.getCurrentPlayerColor(), from, to)) {
-            this.currentlySelected = null;
-            return false;
-        }
-
-        gameBoard.getChildren().remove(this.currentlySelected);
-        this.currentlySelected = null;
-        drawCircleAtPos(to);
-
-        if (Logic.activatesMill(this.game, from, to)) {
-            game.setGameState(GameState.TAKE);
-            highlightTakeablePieces();
-            return false;
-        } else {
-            return true;
-        }
     }
 
     private void changeColorFromHighlightedPieces(Color fColor, Color tColor) {
