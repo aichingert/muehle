@@ -44,7 +44,7 @@ public class LoginController {
 
         if (LoginHelper.getInstance().isValidUser(username, password)) {
             Stage stage = (Stage) loginBtn.getScene().getWindow();
-            stage.setScene(new Scene(loadFXML("home"), 800, 800));
+            stage.setScene(new Scene(loadFXML("home"), 900, 900));
         } else {
             (new Alert(Alert.AlertType.WARNING, "Incorrect username or password")).show();
             this.infoLabel.setText("Invalid username or password!");

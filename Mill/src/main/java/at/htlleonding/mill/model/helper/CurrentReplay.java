@@ -57,6 +57,10 @@ public class CurrentReplay {
         this.counter = 0;
     }
 
+    public Long getGameId() {
+        return gameId;
+    }
+
     public int getCounter() {
         return this.counter;
     }

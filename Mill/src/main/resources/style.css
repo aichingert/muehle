@@ -10,6 +10,19 @@ Label {
     -fx-font-size: 20px;
 }
 
+.currentPos, .player1Label {
+    -fx-font-size: 13px;
+    -fx-background-radius: 60px;
+    -fx-background-color: #20262b;
+    -fx-text-fill: white;
+    -fx-alignment: center;
+    -fx-padding: 5px;
+}
+
+ComboBox {
+    -fx-background-color: transparent;
+}
+
 Button {
     -fx-background-color:
             #090a0c,
@@ -24,3 +37,39 @@ Button {
     -fx-font-size: 15px;
     -fx-padding: 6 16 4 16;
 }
+
+Button:hover {
+    -fx-text-fill: #0093ff;
+}
+
+.list-view {
+    -fx-background-radius: 40px;
+    /*-fx-border-radius: 40px;*/
+    -fx-background-color: transparent;
+}
+
+.list-cell, .list-cell:focused {
+    -fx-border-radius: 40px;
+    -fx-background-radius: 60px;
+    -fx-background-color: #20262b;
+    -fx-text-fill: white;
+    -fx-alignment: center;
+}
+
+#gamesLv .list-cell:filled:selected:focused, #gamesLv .list-cell:filled:selected {
+    -fx-background-color: linear-gradient(#328BDB 0%, #207BCF 25%, #1973C9 75%, #0A65BF 100%);
+}
+
+#gamesLv .list-cell:filled:hover, #comboBoxPlayer2 .list-cell:filled:hover {
+    -fx-background-color: #0093ff;
+}
+
+#leaderboardLv .list-cell:filled:hover {
+    -fx-background-color: #38424b;
+}
+
+.list-cell:empty {
+    -fx-background-color: #38424b;
+    -fx-border-width: 0px;
+}
+

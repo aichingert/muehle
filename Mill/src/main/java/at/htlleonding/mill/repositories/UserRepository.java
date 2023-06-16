@@ -136,4 +136,47 @@ public class UserRepository implements Persistent<User> {
 
         return user;
     }
+
+    public User findByAlias(String alias) {
+        User user = null;
+
+        try (Connection connection = dataSource.getConnection()) {
+            String sql = "SELECT * FROM M_USER WHERE U_ALIAS=?";
+
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, alias);
+            ResultSet result = statement.executeQuery();
+
+            if (result.next()) {
+                user = new User(
+                        result.getString("U_USERNAME"),
+                        result.getString("U_PASSWORD"),
+                        result.getString("U_ALIAS")
+                );
+                user.setId(result.getLong("U_ID"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return user;
+    }
+
+    public List<String> getAllAliases() {
+        List<String> aliases = new ArrayList<>();
+
+        try (Connection connection = dataSource.getConnection()) {
+            String sql = "SELECT U_ALIAS FROM M_USER";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            ResultSet result = preparedStatement.executeQuery();
+
+            while(result.next()) {
+                aliases.add(result.getString("U_ALIAS"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return aliases;
+    }
 }

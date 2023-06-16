@@ -7,7 +7,8 @@
 <?import javafx.scene.layout.*?>
 
 <VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="at.htlleonding.mill.controller.RegisterController">
+      fx:controller="at.htlleonding.mill.controller.RegisterController"
+      stylesheets="/style.css">
 
     <HBox alignment="CENTER" spacing="5">
         <Label text="Username: " />
