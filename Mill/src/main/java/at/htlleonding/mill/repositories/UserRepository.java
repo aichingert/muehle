@@ -51,7 +51,7 @@ public class UserRepository implements Persistent<User> {
             statement.setString(3, user.getAlias());
 
             if (statement.executeUpdate() == 0) {
-                throw new SQLException("Update of M_USER failed, no rows affected");
+                throw new SQLException("Insert of M_USER failed, no rows affected");
             }
 
             try (ResultSet keys = statement.getGeneratedKeys()) {

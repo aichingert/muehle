@@ -14,6 +14,11 @@ public class Game {
         this.loserId = loserId;
     }
 
+    public Game(Long winnerId, Long loserId) {
+        this.winnerId = winnerId;
+        this.loserId = loserId;
+    }
+
     public Long getGameId() {
         return gameId;
     }

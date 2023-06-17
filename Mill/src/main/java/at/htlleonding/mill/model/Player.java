@@ -1,36 +1,49 @@
 package at.htlleonding.mill.model;
 
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+
 public class Player {
     public static final int MAX_PIECES = 5;
-    private int amountOfPieces;
+    private SimpleIntegerProperty amountOfPieces;
     private final int color;
-    private boolean isPlayerTurn;
+    private SimpleBooleanProperty isPlayerTurn;
 
     public Player(int color) {
-        this.amountOfPieces = 0;
+        this.amountOfPieces = new SimpleIntegerProperty(0);
         this.color = color;
-        this.isPlayerTurn = color == 1;
+        this.isPlayerTurn = new SimpleBooleanProperty(color == 1);
     }
 
     public int getColor() {
         return this.color;
     }
 
+    public SimpleIntegerProperty amountOfPiecesProperty() {
+        return amountOfPieces;
+    }
+
     public int getAmountOfPieces() {
-        return this.amountOfPieces;
+        return this.amountOfPieces.get();
     }
 
     public void setPiece() {
-        this.amountOfPieces += 1;
+        this.amountOfPieces.set(this.amountOfPieces.get() + 1);
     }
-    public void removePiece() { this.amountOfPieces -= 1; }
+    public void removePiece() {
+        this.amountOfPieces.set(this.amountOfPieces.get() - 1);
+    }
+
+    public SimpleBooleanProperty isPlayerTurnProperty() {
+        return isPlayerTurn;
+    }
 
     public boolean isPlayerTurn() {
-        return this.isPlayerTurn;
+        return this.isPlayerTurn.get();
     }
 
     public void setPlayerTurn(boolean playerTurn) {
-        this.isPlayerTurn = playerTurn;
+        this.isPlayerTurn.set(playerTurn);
     }
 
     public Player copy() {

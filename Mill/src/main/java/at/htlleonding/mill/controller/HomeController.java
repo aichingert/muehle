@@ -94,7 +94,7 @@ public class HomeController {
         }
         else {
             CurrentGame.getInstance().setPlayer1Id(player1Id);
-            CurrentGame.getInstance().setPlayer1Id(player2.getId());
+            CurrentGame.getInstance().setPlayer2Id(player2.getId());
 
             Stage stage = (Stage) aliasLabel.getScene().getWindow();
             stage.setScene(new Scene(loadFXML("mill"), 800, 800));

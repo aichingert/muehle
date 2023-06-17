@@ -1,21 +1,28 @@
 package at.htlleonding.mill.controller;
 
-import at.htlleonding.mill.model.GameState;
-import at.htlleonding.mill.model.Mill;
-import at.htlleonding.mill.model.Move;
-import at.htlleonding.mill.model.Player;
+import at.htlleonding.mill.model.*;
+import at.htlleonding.mill.model.helper.CurrentGame;
 import at.htlleonding.mill.model.helper.Logic;
 import at.htlleonding.mill.model.helper.Position;
-import at.htlleonding.mill.repositories.MoveRepository;
+import at.htlleonding.mill.repositories.GameRepository;
+import at.htlleonding.mill.repositories.UserRepository;
 import at.htlleonding.mill.view.GameBoard;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.IntegerBinding;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static at.htlleonding.mill.App.loadFXML;
 
 public class MillController {
     Mill game;
@@ -23,28 +30,85 @@ public class MillController {
     @FXML
     private GameBoard gameBoard;
     @FXML
-    private Label lblCurPlayer;
+    private Label lblPlayer1;
+    @FXML
+    private Label lblPlayer2;
+    @FXML
+    private Label lblPieces1;
+    @FXML
+    private Label lblPieces2;
+    @FXML
+    private Label lblPhase;
 
     private Circle currentlySelected;
     private List<Position> takeablePieces;
     private List<Move> movesForReplay;
     private Player playerOne;
     private Player playerTwo;
+    boolean playerOneIsWhite;
 
     @FXML
     private void initialize() {
-        boolean playerOneIsWhite = Math.random() > 0.5;
+        UserRepository userRepository = new UserRepository();
+        String player1Name = userRepository.findById(CurrentGame.getInstance().getPlayer1Id()).getAlias();
+        String player2Name = userRepository.findById(CurrentGame.getInstance().getPlayer2Id()).getAlias();
+
+        playerOneIsWhite = Math.random() > 0.5;
         this.playerOne = new Player(playerOneIsWhite ? 1 : 2);
         this.playerTwo = new Player(playerOneIsWhite ? 2 : 1);
+
+        if (playerOneIsWhite) {
+            lblPlayer1.setText(player1Name);
+            lblPlayer2.setText(player2Name);
+
+            this.playerOne.amountOfPiecesProperty().addListener((observableValue, number, t1) -> {
+                lblPieces1.setText("Pieces on board: " + observableValue.getValue().toString());
+            });
+            this.playerTwo.amountOfPiecesProperty().addListener((observableValue, number, t1) -> {
+                lblPieces2.setText("Pieces on board: " + observableValue.getValue().toString());
+            });
+
+            this.playerOne.isPlayerTurnProperty().addListener((observableValue, aBoolean, t1) -> {
+                lblPlayer1.setDisable(!observableValue.getValue());
+                lblPieces1.setDisable(!observableValue.getValue());
+            });
+            this.playerTwo.isPlayerTurnProperty().addListener((observableValue, aBoolean, t1) -> {
+                lblPlayer2.setDisable(!observableValue.getValue());
+                lblPieces2.setDisable(!observableValue.getValue());
+            });
+        }
+        else {
+            lblPlayer1.setText(player2Name);
+            lblPlayer2.setText(player1Name);
+
+            this.playerTwo.amountOfPiecesProperty().addListener((observableValue, number, t1) -> {
+                lblPieces1.setText("Pieces on board: " + observableValue.getValue().toString());
+            });
+            this.playerOne.amountOfPiecesProperty().addListener((observableValue, number, t1) -> {
+                lblPieces2.setText("Pieces on board: " + observableValue.getValue().toString());
+            });
+
+            this.playerOne.isPlayerTurnProperty().addListener((observableValue, aBoolean, t1) -> {
+                lblPlayer2.setDisable(!observableValue.getValue());
+                lblPieces2.setDisable(!observableValue.getValue());
+            });
+            this.playerTwo.isPlayerTurnProperty().addListener((observableValue, aBoolean, t1) -> {
+                lblPlayer1.setDisable(!observableValue.getValue());
+                lblPieces1.setDisable(!observableValue.getValue());
+            });
+        }
 
         this.game = new Mill(playerOne, playerTwo);
         this.currentlySelected = null;
         this.takeablePieces = null;
         this.movesForReplay = new ArrayList<>();
+
+        lblPlayer2.setDisable(true);
+        lblPieces2.setDisable(true);
     }
 
     @FXML
-    private void playerInputEvent(MouseEvent mouseEvent) {
+    private void playerInputEvent(MouseEvent mouseEvent) throws IOException {
         double x = mouseEvent.getX();
         double y = mouseEvent.getY();
         boolean isTurnToSwitch = false;
@@ -69,6 +133,29 @@ public class MillController {
         if (isTurnToSwitch) {
             this.game.switchTurn();
         }
+
+        if (game.getGameState().equals(GameState.OVER)) {
+            int winnerColor = this.game.getCurrentPlayerColor() == 1 ? 2 : 1;
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Congratulations " + (winnerColor == 1 ? lblPlayer1.getText() : lblPlayer2.getText()) + ", you WON!!!");
+
+            GameRepository gameRepository = new GameRepository();
+            Game game;
+            if (winnerColor == 1 && playerOneIsWhite) {
+                game = new Game(CurrentGame.getInstance().getPlayer1Id(), CurrentGame.getInstance().getPlayer2Id());
+                System.out.println("Links gwonna");
+            }
+            else {
+                game = new Game(CurrentGame.getInstance().getPlayer2Id(), CurrentGame.getInstance().getPlayer1Id());
+                System.out.println("Rechts gwonna");
+            }
+            gameRepository.insert(game);
+
+            alert.showAndWait();
+            Stage stage = (Stage) lblPhase.getScene().getWindow();
+            stage.setScene(new Scene(loadFXML("home"), 800, 800));
+        }
+
+        lblPhase.setText("You can " + game.getGameState().toString());
     }
 
     private void handleStateMoveAndJump(double x, double y) {
