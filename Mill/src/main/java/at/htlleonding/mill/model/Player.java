@@ -23,6 +23,7 @@ public class Player {
     public void setPiece() {
         this.amountOfPieces += 1;
     }
+    public void removePiece() { this.amountOfPieces -= 1; }
 
     public boolean isPlayerTurn() {
         return this.isPlayerTurn;

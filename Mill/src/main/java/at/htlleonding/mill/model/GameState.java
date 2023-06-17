@@ -4,5 +4,6 @@ public enum GameState {
     SET,
     MOVE,
     JUMP,
-    TAKE
+    TAKE,
+    OVER
 }

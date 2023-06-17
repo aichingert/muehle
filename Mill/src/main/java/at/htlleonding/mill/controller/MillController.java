@@ -28,11 +28,16 @@ public class MillController {
     private Circle currentlySelected;
     private List<Position> takeablePieces;
     private List<Move> movesForReplay;
+    private Player playerOne;
+    private Player playerTwo;
 
     @FXML
     private void initialize() {
         boolean playerOneIsWhite = Math.random() > 0.5;
-        this.game = new Mill(new Player(playerOneIsWhite ? 1 : 2), new Player(playerOneIsWhite ? 2 : 1));
+        this.playerOne = new Player(playerOneIsWhite ? 1 : 2);
+        this.playerTwo = new Player(playerOneIsWhite ? 2 : 1);
+
+        this.game = new Mill(playerOne, playerTwo);
         this.currentlySelected = null;
         this.takeablePieces = null;
         this.movesForReplay = new ArrayList<>();
@@ -43,18 +48,21 @@ public class MillController {
         double x = mouseEvent.getX();
         double y = mouseEvent.getY();
         boolean isTurnToSwitch = false;
+        System.out.println(this.game.getGameState());
+        System.out.println(this.playerOne.getAmountOfPieces());
+        System.out.println(this.playerTwo.getAmountOfPieces());
 
         switch (game.getGameState()) {
             case SET  -> isTurnToSwitch = setPieceAtSelectedLocation(x, y);
-            case MOVE -> handleStateMove(x, y);
-            case JUMP -> {
-
-            }
+            case MOVE, JUMP -> handleStateMoveAndJump(x, y);
             case TAKE -> {
                 if (removeHighlightedPiece(x, y)) {
                     changeColorFromHighlightedPieces(Color.RED, this.game.getCurrentPlayerColor() == 1 ? Color.GRAY : Color.WHITE);
                     isTurnToSwitch = true;
                 }
+            }
+            case OVER -> {
+                System.out.println(this.game.getCurrentPlayerColor());
             }
         }
 
@@ -63,7 +71,7 @@ public class MillController {
         }
     }
 
-    private void handleStateMove(double x, double y) {
+    private void handleStateMoveAndJump(double x, double y) {
         if (this.currentlySelected != null && moveSelectedPieceToNextPositionOrDropIt(x, y)) {
             game.switchTurn();
             return;
@@ -107,6 +115,12 @@ public class MillController {
 
     private void highlightTakeablePieces() {
         this.takeablePieces = Logic.getTakeablePieces(game, game.getCurrentPlayerColor() == 1 ? 2 : 1);
+
+        if (this.takeablePieces.size() == 0) {
+            this.game.updateGameState();
+            return;
+        }
+
         changeColorFromHighlightedPieces(this.game.getCurrentPlayerColor() == 1 ? Color.GRAY : Color.WHITE, Color.RED);
     }
 

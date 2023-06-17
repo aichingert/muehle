@@ -43,6 +43,11 @@ public class Mill {
 
     public void removePiece(Position position) {
         if (gameState == GameState.TAKE && getValueAt(position) == (getCurrentPlayerColor() == 1 ? 2 : 1)) {
+            if (this.getCurrentPlayerColor() == this.playerOne.getColor()) {
+                this.playerTwo.removePiece();
+            } else {
+                this.playerOne.removePiece();
+            }
             this.board[position.getZ()][position.getY()][position.getX()] = 0;
         }
     }
@@ -54,13 +59,10 @@ public class Mill {
             return false;
         }
 
-        // 0 0 0
-        // 0   0
-        // 0 0 0
-
         List<Position> possibleMoves = Logic.getMoves(this, from);
 
-        if (!possibleMoves.contains(to)) {
+        if (this.gameState == GameState.JUMP && this.getValueAt(to) != 0
+        || this.gameState != GameState.JUMP && !possibleMoves.contains(to)) {
             return false;
         }
 
@@ -93,6 +95,8 @@ public class Mill {
     public void updateGameState() {
         if (this.moveCounter < 2 * Player.MAX_PIECES) {
             this.gameState = GameState.SET;
+        } else if (this.playerOne.getAmountOfPieces() < 3 || this.playerTwo.getAmountOfPieces() < 3) {
+            this.gameState = GameState.OVER;
         } else if (this.getCurrentPlayerColor() == 1 && this.playerOne.getAmountOfPieces() == 3
                 || this.getCurrentPlayerColor() == 2 && this.playerTwo.getAmountOfPieces() == 3) {
             this.gameState = GameState.JUMP;
