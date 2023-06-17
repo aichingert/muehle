@@ -21,10 +21,7 @@ public class Mill {
     }
 
     public boolean setPiece(int color, Position position) {
-        if (gameState != GameState.SET ||
-                this.playerOne.getAmountOfPieces() == Player.MAX_PIECES &&
-                this.playerTwo.getAmountOfPieces() == Player.MAX_PIECES ||
-                color != 1 && color != 2) {
+        if (color != 1 && color != 2) {
             return false;
         }
 
@@ -86,22 +83,26 @@ public class Mill {
 
     public void switchTurn() {
         this.moveCounter += 1;
+
         this.playerOne.setPlayerTurn(!this.playerOne.isPlayerTurn());
         this.playerTwo.setPlayerTurn(!this.playerTwo.isPlayerTurn());
-        this.updateGameState();
-    }
 
-    public GameState getGameState() {
-        return gameState;
+        this.updateGameState();
     }
 
     public void updateGameState() {
         if (this.moveCounter < 2 * Player.MAX_PIECES) {
             this.gameState = GameState.SET;
-            return;
+        } else if (this.getCurrentPlayerColor() == 1 && this.playerOne.getAmountOfPieces() == 3
+                || this.getCurrentPlayerColor() == 2 && this.playerTwo.getAmountOfPieces() == 3) {
+            this.gameState = GameState.JUMP;
+        } else {
+            this.gameState = GameState.MOVE;
         }
+    }
 
-        this.gameState = GameState.MOVE;
+    public GameState getGameState() {
+        return gameState;
     }
 
     public Mill copy() {

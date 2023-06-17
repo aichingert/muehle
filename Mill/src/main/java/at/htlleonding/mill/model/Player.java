@@ -1,7 +1,7 @@
 package at.htlleonding.mill.model;
 
 public class Player {
-    public static final int MAX_PIECES = 9;
+    public static final int MAX_PIECES = 5;
     private int amountOfPieces;
     private final int color;
     private boolean isPlayerTurn;

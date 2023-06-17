@@ -59,12 +59,11 @@ public class MillController {
         }
 
         if (isTurnToSwitch) {
-            game.switchTurn();
+            this.game.switchTurn();
         }
     }
 
     private void handleStateMove(double x, double y) {
-        System.out.println(this.currentlySelected);
         if (this.currentlySelected != null && moveSelectedPieceToNextPositionOrDropIt(x, y)) {
             game.switchTurn();
             return;
@@ -72,7 +71,7 @@ public class MillController {
 
         this.currentlySelected = gameBoard.getPieceFromSelectedCoordinates(x, y, game.getCurrentPlayerColor() == 1 ? Color.WHITE : Color.GRAY);
 
-        if (this.currentlySelected != null) {
+        if (this.currentlySelected != null && this.game.getGameState() != GameState.TAKE) {
             this.currentlySelected.setFill(Color.RED);
         }
     }
@@ -104,6 +103,11 @@ public class MillController {
         }
 
         return true;
+    }
+
+    private void highlightTakeablePieces() {
+        this.takeablePieces = Logic.getTakeablePieces(game, game.getCurrentPlayerColor() == 1 ? 2 : 1);
+        changeColorFromHighlightedPieces(this.game.getCurrentPlayerColor() == 1 ? Color.GRAY : Color.WHITE, Color.RED);
     }
 
     private boolean removeHighlightedPiece(double x, double y) {
@@ -147,6 +151,7 @@ public class MillController {
     }
 
     private void changeColorFromHighlightedPieces(Color fColor, Color tColor) {
+        this.currentlySelected = null;
         double boardSize = Math.min(gameBoard.getWidth(), gameBoard.getHeight()) - 2 * 50;
         double aSixth = boardSize / 6;
 
@@ -159,12 +164,6 @@ public class MillController {
                     if (c != null)
                         c.setFill(tColor);
                 });
-    }
-
-    private void highlightTakeablePieces() {
-        this.takeablePieces = Logic.getTakeablePieces(game, game.getCurrentPlayerColor() == 1 ? 2 : 1);
-
-        changeColorFromHighlightedPieces(this.game.getCurrentPlayerColor() == 1 ? Color.GRAY : Color.WHITE, Color.RED);
     }
 
     private void drawCircleAtPos(Position pos) {
