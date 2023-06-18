@@ -169,27 +169,4 @@ public class MoveRepository implements Persistent<Move> {
 
         return false;
     }
-
-    public Long getMoveId(Move move) throws SQLException {
-        try (Connection connection = dataSource.getConnection()) {
-            save(move);
-            String sql = "SELECT M_ID FROM M_MOVE WHERE M_FX=? AND M_FY=? AND M_TX=? AND M_TY=?";
-
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setDouble(1, move.getFx());
-            statement.setDouble(2, move.getFy());
-            statement.setDouble(3, move.getTx());
-            statement.setDouble(4, move.getTy());
-
-            ResultSet resultSet = statement.executeQuery();
-
-            if (resultSet.next()) {
-                return resultSet.getLong("M_ID");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
 }

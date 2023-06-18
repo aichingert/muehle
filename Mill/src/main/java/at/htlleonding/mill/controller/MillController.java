@@ -116,9 +116,6 @@ public class MillController {
         double x = mouseEvent.getX();
         double y = mouseEvent.getY();
         boolean isTurnToSwitch = false;
-        System.out.println(this.game.getGameState());
-        System.out.println(this.playerOne.getAmountOfPieces());
-        System.out.println(this.playerTwo.getAmountOfPieces());
 
         switch (game.getGameState()) {
             case SET  -> isTurnToSwitch = setPieceAtSelectedLocation(x, y);
@@ -131,12 +128,12 @@ public class MillController {
             }
         }
 
-        if (this.game.getGameState().equals(GameState.OVER)) {
-            handleGameStateOver();
-        }
-
         if (isTurnToSwitch) {
             this.game.switchTurn();
+        }
+
+        if (this.game.getGameState().equals(GameState.OVER)) {
+            handleGameStateOver();
         }
 
         lblPhase.setText("You can " + game.getGameState().toString());
@@ -160,7 +157,7 @@ public class MillController {
 
         for (int i = 0; i < movesForReplay.size(); i++) {
             moveRepository.save(movesForReplay.get(i));
-            replayRepository.insert(new Replay(Long.valueOf(i), game.getGameId(), movesForReplay.get(i)));
+            replayRepository.insert(new Replay((long) i, game.getGameId(), movesForReplay.get(i)));
         }
 
         alert.showAndWait();
@@ -230,7 +227,10 @@ public class MillController {
         Position pos = gameBoard.convertCoordinateToPosition(x, y);
 
         if (this.takeablePieces.contains(pos)) {
-            gameBoard.getChildren().remove(gameBoard.getPieceFromSelectedCoordinates(x, y, Color.RED));
+            double[] xy = positionToRaw(pos);
+            Circle circle = gameBoard.getPieceFromSelectedCoordinates(x, y, Color.RED);
+            this.movesForReplay.add(new Move(-1, -1, xy[0], xy[1]));
+            gameBoard.getChildren().remove(circle);
             game.removePiece(pos);
             return true;
         }
@@ -247,7 +247,8 @@ public class MillController {
         Position pos = gameBoard.convertCoordinateToPosition(x, y);
 
         if (game.setPiece(game.getCurrentPlayerColor(), pos)) {
-            this.movesForReplay.add(new Move(x, y, 0, 0));
+            double[] xy = positionToRaw(pos);
+            this.movesForReplay.add(new Move(xy[0], xy[1], 0, 0));
             drawCircleAtPos(pos);
 
             if (Logic.activatesMill(game, null, pos)) {
@@ -266,14 +267,12 @@ public class MillController {
 
     private void changeColorFromHighlightedPieces(Color fColor, Color tColor) {
         this.currentlySelected = null;
-        double boardSize = Math.min(gameBoard.getWidth(), gameBoard.getHeight()) - 2 * 50;
-        double aSixth = boardSize / 6;
-
         this.takeablePieces.stream()
-                .map(p -> gameBoard.getPieceFromSelectedCoordinates(
-                        50 + p.getX() * ((3 - p.getZ()) * aSixth) + p.getZ() * aSixth,
-                        50 + p.getY() * ((3 - p.getZ()) * aSixth) + p.getZ() * aSixth,
-                        fColor))
+                .map(p -> {
+                    double[] xy = positionToRaw(p);
+                    Circle c = gameBoard.getPieceFromSelectedCoordinates(xy[0], xy[1], fColor);
+                    return c;
+                })
                 .forEach(c -> {
                     if (c != null)
                         c.setFill(tColor);
@@ -281,17 +280,20 @@ public class MillController {
     }
 
     private void drawCircleAtPos(Position pos) {
+        double[] xy = positionToRaw(pos);
+
+        if (game.getCurrentPlayerColor() == 1) {
+            gameBoard.drawIntersection(xy[0], xy[1], Color.WHITE, 9);
+        }
+        else {
+            gameBoard.drawIntersection(xy[0], xy[1], Color.GRAY, 9);
+        }
+    }
+
+    private double[] positionToRaw(Position pos) {
         double boardSize = Math.min(gameBoard.getWidth(), gameBoard.getHeight()) - 2 * 50;
         double aSixth = boardSize / 6;
 
-        double x = 50 + pos.getX() * ((3 - pos.getZ()) * aSixth) + pos.getZ() * aSixth;
-        double y = 50 + pos.getY() * ((3 - pos.getZ()) * aSixth) + pos.getZ() * aSixth;
-
-        if (game.getCurrentPlayerColor() == 1) {
-            gameBoard.drawIntersection(x, y, Color.WHITE, 9);
-        }
-        else {
-            gameBoard.drawIntersection(x, y, Color.GRAY, 9);
-        }
+        return new double[]{50 + pos.getX() * ((3 - pos.getZ()) * aSixth) + pos.getZ() * aSixth, 50 + pos.getY() * ((3 - pos.getZ()) * aSixth) + pos.getZ() * aSixth};
     }
 }

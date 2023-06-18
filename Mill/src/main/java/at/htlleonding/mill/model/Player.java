@@ -4,7 +4,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
 public class Player {
-    public static final int MAX_PIECES = 3;
+    public static final int MAX_PIECES = 9;
     private SimpleIntegerProperty amountOfPieces;
     private final int color;
     private SimpleBooleanProperty isPlayerTurn;
