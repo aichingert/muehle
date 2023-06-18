@@ -7,7 +7,9 @@ import at.htlleonding.mill.repositories.UserRepository;
 import at.htlleonding.mill.model.Game;
 import at.htlleonding.mill.model.User;
 import at.htlleonding.mill.model.helper.LoginHelper;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -15,7 +17,6 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -39,9 +40,14 @@ public class HomeController {
     private Button replayBtn;
     @FXML
     private Label aliasLabel;
+    @FXML
+    private TextField searchTextField;
+    private FilteredList<String> aliasesFilteredList;
 
     @FXML
     private void initialize() {
+        searchTextField.setPromptText("Search");
+
         //aliasLabel.getScene().getStylesheets().add("style.css");
         gamesLv.setOnKeyPressed(k -> {
             if (k.getCode() == KeyCode.ESCAPE) {
@@ -55,11 +61,12 @@ public class HomeController {
         UserRepository userRepository = new UserRepository();
         String currentUserAlias = userRepository.findById(LoginHelper.getInstance().getCurrentUserId()).getAlias();
 
-        comboBoxPlayer2.getItems().addAll((userRepository
+        aliasesFilteredList = new FilteredList<>(FXCollections.observableList(userRepository
                 .getAllAliases()
                 .stream()
                 .filter(a -> !a.equals(currentUserAlias))
                 .toList()));
+        comboBoxPlayer2.getItems().addAll(aliasesFilteredList);
 
         replayBtn.setDisable(true);
         aliasLabel.setText(LoginHelper.getInstance().getCurrentUser());
@@ -142,5 +149,15 @@ public class HomeController {
             Stage stage = (Stage) aliasLabel.getScene().getWindow();
             stage.setScene(new Scene(loadFXML("replay"), 800, 800));
         }
+    }
+
+    @FXML
+    private void onKeyTypedSearchField(KeyEvent keyEvent) {
+        aliasesFilteredList.setPredicate(null);
+        comboBoxPlayer2.show();
+        aliasesFilteredList.setPredicate(a -> a.toLowerCase().contains(searchTextField.getText().toLowerCase()));
+        comboBoxPlayer2.getItems().clear();
+        comboBoxPlayer2.getItems().addAll(aliasesFilteredList);
+        comboBoxPlayer2.show();
     }
 }
