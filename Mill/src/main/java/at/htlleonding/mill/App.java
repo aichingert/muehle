@@ -1,11 +1,12 @@
 package at.htlleonding.mill;
 
+import at.htlleonding.mill.repositories.SqlRunner;
+import at.htlleonding.mill.repositories.SqlScript;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -14,6 +15,7 @@ import java.util.Objects;
 public class App extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
+        SqlRunner.runScript(SqlScript.CREATE);
         Scene scene = new Scene(loadFXML("login"), 800, 800);
 
         primaryStage.setScene(scene);

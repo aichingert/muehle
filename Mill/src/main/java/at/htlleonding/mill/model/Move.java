@@ -53,4 +53,15 @@ public class Move {
     public void setTy(int ty) {
         this.ty = ty;
     }
+
+    @Override
+    public String toString() {
+        return "Move{" +
+                "id=" + id +
+                ", fx=" + fx +
+                ", fy=" + fy +
+                ", tx=" + tx +
+                ", ty=" + ty +
+                '}';
+    }
 }

@@ -194,7 +194,10 @@ public class MillController {
             return false;
         }
 
-        this.movesForReplay.add(new Move(this.currentlySelected.getCenterX(), this.currentlySelected.getCenterY(), x, y));
+        double[] fxy = positionToRaw(from);
+        double[] txy = positionToRaw(to);
+
+        this.movesForReplay.add(new Move(fxy[0], fxy[1], txy[0], txy[1]));
         this.gameBoard.getChildren().remove(this.currentlySelected);
         drawCircleAtPos(to);
 
