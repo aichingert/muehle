@@ -203,8 +203,7 @@ public class MillController {
 
         if (Logic.activatesMill(this.game, from, to)) {
             this.game.setGameState(GameState.TAKE);
-            highlightTakeablePieces();
-            return false;
+            return highlightTakeablePieces();
         }
 
         return true;
@@ -231,8 +230,9 @@ public class MillController {
 
         if (this.takeablePieces.contains(pos)) {
             double[] xy = positionToRaw(pos);
-            Circle circle = gameBoard.getPieceFromSelectedCoordinates(x, y, Color.RED);
             this.movesForReplay.add(new Move(-1, -1, xy[0], xy[1]));
+
+            Circle circle = gameBoard.getPieceFromSelectedCoordinates(x, y, Color.RED);
             gameBoard.getChildren().remove(circle);
             game.removePiece(pos);
             return true;

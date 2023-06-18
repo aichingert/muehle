@@ -27,16 +27,13 @@ public class ReplayController {
         }
 
         Move move = replay.getMove();
-        System.out.println(move);
 
         // Tx and Ty == 0.0 => SET
         if (move.getTx() == 0.0 && move.getTy() == 0.0) {
-            System.out.println("SET");
             gameBoard.drawIntersection(move.getFx(), move.getFy(), currentColor, 9);
 
         // Fx and Fy == -1 => TAKE
         } else if (move.getFx() == -1.0 && move.getFy() == -1.0) {
-            System.out.println("TAKE");
             gameBoard.getChildren().remove(
                     gameBoard.getPieceFromSelectedCoordinates(move.getTx(), move.getTy(), currentColor)
             );
@@ -44,7 +41,6 @@ public class ReplayController {
 
         // Normal move phase
         } else {
-            System.out.println("NORMAL");
             gameBoard.getChildren().remove(
                     gameBoard.getPieceFromSelectedCoordinates(move.getFx(), move.getFy(),currentColor)
             );
@@ -62,22 +58,31 @@ public class ReplayController {
         }
 
         Move move = replay.getMove();
+        currentColor = inverseCurrentColor();
+        System.out.println(move);
 
-        if (CurrentReplay.getInstance().getCounter() < 2 * Player.MAX_PIECES) {
-            gameBoard.getChildren().remove(gameBoard.getPieceFromSelectedCoordinates(
-                    move.getTx(),
-                    move.getTy(),
-                    colorFromCounter(replay.getNthMove().intValue())
-            ));
-            return;
+        // Tx and Ty == 0.0 => SET
+        if (move.getTx() == 0.0 && move.getTy() == 0.0) {
+            System.out.println("SET");
+            gameBoard.getChildren().remove(
+                    gameBoard.getPieceFromSelectedCoordinates(move.getFx(), move.getFy(), currentColor)
+            );
+            // Fx and Fy == -1 => TAKE
+        } else if (move.getFx() == -1.0 && move.getFy() == -1.0) {
+            System.out.println("TAKE");
+            gameBoard.drawIntersection(move.getTx(), move.getTy(), currentColor, 9);
+            currentColor = inverseCurrentColor();
+
+            // Normal move phase
+        } else {
+            System.out.println("NORMAL");
+            gameBoard.getChildren().remove(
+                    gameBoard.getPieceFromSelectedCoordinates(move.getTx(), move.getTy(),currentColor)
+            );
+            gameBoard.drawIntersection(move.getFx(), move.getFy(), currentColor, 9);
         }
 
-        gameBoard.getChildren().remove(gameBoard.getPieceFromSelectedCoordinates(
-                move.getTx(),
-                move.getTy(),
-                colorFromCounter(replay.getNthMove().intValue())
-        ));
-        gameBoard.drawIntersection(move.getFx(), move.getFy(), colorFromCounter(replay.getNthMove().intValue()), 9);
+        currentColor = inverseCurrentColor();
     }
 
     private Color colorFromCounter(int nth) {

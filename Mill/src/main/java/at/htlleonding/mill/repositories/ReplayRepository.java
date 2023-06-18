@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ReplayRepository {
-    private DataSource dataSource = Database.getDataSource();
+    private final DataSource dataSource = Database.getDataSource();
 
     public void insert(Replay replay) {
         try (Connection connection = dataSource.getConnection()) {
@@ -48,7 +48,7 @@ public class ReplayRepository {
         MoveRepository moveRepository = new MoveRepository();
 
         try (Connection connection = dataSource.getConnection()) {
-            String sql = "SELECT R_NTH_MOVE, R_GAME, R_MOVE FROM M_REPLAY WHERE R_GAME=?";
+            String sql = "SELECT R_NTH_MOVE, R_GAME, R_MOVE FROM M_REPLAY WHERE R_GAME=? ORDER BY R_NTH_MOVE";
 
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setLong(1, gameId);

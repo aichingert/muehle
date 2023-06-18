@@ -14,23 +14,12 @@ public class Replay {
     public Long getNthMove() {
         return nthMove;
     }
-
-    public void setNthMove(Long nthMove) {
-        this.nthMove = nthMove;
-    }
-
     public Long getGameId() {
         return gameId;
     }
-
-    public void setGameId(Long gameId) {
-        this.gameId = gameId;
-    }
-
     public Move getMove() {
         return move;
     }
-
     public void setMove(Move move) {
         this.move = move;
     }

@@ -9,10 +9,12 @@ import java.util.List;
 public class CurrentReplay {
     private Long gameId;
     private List<Replay> moves;
+    private final ReplayRepository replayRepository;
     private int counter;
     private static CurrentReplay instance = null;
 
     private CurrentReplay() {
+        replayRepository = new ReplayRepository();
         gameId = null;
         moves = null;
         counter = 0;
@@ -31,9 +33,7 @@ public class CurrentReplay {
             return;
         }
 
-        ReplayRepository replayRepository = new ReplayRepository();
-        this.moves = replayRepository.getAllMovesFromGame(this.gameId);
-        this.moves.sort(Comparator.comparingLong(Replay::getNthMove));
+        this.moves = this.replayRepository.getAllMovesFromGame(this.gameId);
         System.out.println(this.moves.size());
     }
 
