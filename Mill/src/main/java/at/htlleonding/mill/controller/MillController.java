@@ -5,10 +5,10 @@ import at.htlleonding.mill.model.helper.CurrentGame;
 import at.htlleonding.mill.model.helper.Logic;
 import at.htlleonding.mill.model.helper.Position;
 import at.htlleonding.mill.repositories.GameRepository;
+import at.htlleonding.mill.repositories.MoveRepository;
+import at.htlleonding.mill.repositories.ReplayRepository;
 import at.htlleonding.mill.repositories.UserRepository;
 import at.htlleonding.mill.view.GameBoard;
-import javafx.beans.binding.Bindings;
-import javafx.beans.binding.IntegerBinding;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -46,10 +46,14 @@ public class MillController {
     private Player playerOne;
     private Player playerTwo;
     boolean playerOneIsWhite;
+    private MoveRepository moveRepository;
+    private ReplayRepository replayRepository;
 
     @FXML
     private void initialize() {
         UserRepository userRepository = new UserRepository();
+        this.moveRepository = new MoveRepository();
+        this.replayRepository = new ReplayRepository();
         String player1Name = userRepository.findById(CurrentGame.getInstance().getPlayer1Id()).getAlias();
         String player2Name = userRepository.findById(CurrentGame.getInstance().getPlayer2Id()).getAlias();
 
@@ -101,7 +105,7 @@ public class MillController {
         this.game = new Mill(playerOne, playerTwo);
         this.currentlySelected = null;
         this.takeablePieces = null;
-        this.movesForReplay = new ArrayList<>();
+        this.movesForReplay = new ArrayList<Move>();
 
         lblPlayer2.setDisable(true);
         lblPieces2.setDisable(true);
@@ -125,37 +129,43 @@ public class MillController {
                     isTurnToSwitch = true;
                 }
             }
-            case OVER -> {
-                System.out.println(this.game.getCurrentPlayerColor());
-            }
+        }
+
+        if (this.game.getGameState().equals(GameState.OVER)) {
+            handleGameStateOver();
         }
 
         if (isTurnToSwitch) {
             this.game.switchTurn();
         }
 
-        if (game.getGameState().equals(GameState.OVER)) {
-            int winnerColor = this.game.getCurrentPlayerColor() == 1 ? 2 : 1;
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Congratulations " + (winnerColor == 1 ? lblPlayer1.getText() : lblPlayer2.getText()) + ", you WON!!!");
+        lblPhase.setText("You can " + game.getGameState().toString());
+    }
 
-            GameRepository gameRepository = new GameRepository();
-            Game game;
-            if (winnerColor == 1 && playerOneIsWhite) {
-                game = new Game(CurrentGame.getInstance().getPlayer1Id(), CurrentGame.getInstance().getPlayer2Id());
-                System.out.println("Links gwonna");
-            }
-            else {
-                game = new Game(CurrentGame.getInstance().getPlayer2Id(), CurrentGame.getInstance().getPlayer1Id());
-                System.out.println("Rechts gwonna");
-            }
-            gameRepository.insert(game);
+    public void handleGameStateOver() throws IOException {
+        int winnerColor = this.game.getCurrentPlayerColor() == 1 ? 2 : 1;
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Congratulations " + (winnerColor == 1 ? lblPlayer1.getText() : lblPlayer2.getText()) + ", you WON!!!");
 
-            alert.showAndWait();
-            Stage stage = (Stage) lblPhase.getScene().getWindow();
-            stage.setScene(new Scene(loadFXML("home"), 800, 800));
+        GameRepository gameRepository = new GameRepository();
+        Game game;
+        if (winnerColor == 1 && playerOneIsWhite) {
+            game = new Game(CurrentGame.getInstance().getPlayer1Id(), CurrentGame.getInstance().getPlayer2Id());
+            System.out.println("Links gwonna");
+        }
+        else {
+            game = new Game(CurrentGame.getInstance().getPlayer2Id(), CurrentGame.getInstance().getPlayer1Id());
+            System.out.println("Rechts gwonna");
+        }
+        gameRepository.insert(game);
+
+        for (int i = 0; i < movesForReplay.size(); i++) {
+            moveRepository.save(movesForReplay.get(i));
+            replayRepository.insert(new Replay(Long.valueOf(i), game.getGameId(), movesForReplay.get(i)));
         }
 
-        lblPhase.setText("You can " + game.getGameState().toString());
+        alert.showAndWait();
+        Stage stage = (Stage) lblPhase.getScene().getWindow();
+        stage.setScene(new Scene(loadFXML("home"), 800, 800));
     }
 
     private void handleStateMoveAndJump(double x, double y) {
@@ -200,15 +210,16 @@ public class MillController {
         return true;
     }
 
-    private void highlightTakeablePieces() {
+    private boolean highlightTakeablePieces() {
         this.takeablePieces = Logic.getTakeablePieces(game, game.getCurrentPlayerColor() == 1 ? 2 : 1);
 
-        if (this.takeablePieces.size() == 0) {
+        if (this.takeablePieces.isEmpty()) {
             this.game.updateGameState();
-            return;
+            return true;
         }
 
         changeColorFromHighlightedPieces(this.game.getCurrentPlayerColor() == 1 ? Color.GRAY : Color.WHITE, Color.RED);
+        return false;
     }
 
     private boolean removeHighlightedPiece(double x, double y) {
@@ -240,8 +251,10 @@ public class MillController {
             drawCircleAtPos(pos);
 
             if (Logic.activatesMill(game, null, pos)) {
-                highlightTakeablePieces();
                 game.setGameState(GameState.TAKE);
+                if (highlightTakeablePieces()) {
+                    isTurnToSwitch = true;
+                }
             } else {
                 isTurnToSwitch = true;
                 game.updateGameState();

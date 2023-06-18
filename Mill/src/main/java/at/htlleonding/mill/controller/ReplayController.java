@@ -14,13 +14,14 @@ public class ReplayController {
 
     @FXML
     private void initialize() {
-        CurrentReplay.getInstance().setGameId(1L);
+        System.out.println(CurrentReplay.getInstance().getGameId());
         CurrentReplay.getInstance().fillMoves();
     }
 
     public void nextMove(ActionEvent actionEvent) {
         Replay replay = CurrentReplay.getInstance().getNext();
 
+        System.out.println(replay);
         if (replay == null) {
             return;
         }
@@ -29,8 +30,8 @@ public class ReplayController {
 
         if (CurrentReplay.getInstance().getCounter() < 2 * Player.MAX_PIECES) {
             gameBoard.drawIntersection(
-                    move.getTx(),
-                    move.getTy(),
+                    move.getFx(),
+                    move.getFy(),
                     colorFromCounter(replay.getNthMove().intValue()),
                     9
             );

@@ -34,6 +34,7 @@ public class CurrentReplay {
         ReplayRepository replayRepository = new ReplayRepository();
         this.moves = replayRepository.getAllMovesFromGame(this.gameId);
         this.moves.sort(Comparator.comparingLong(Replay::getNthMove));
+        System.out.println(this.moves.size());
     }
 
     public Replay getNext() {

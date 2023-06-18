@@ -97,8 +97,8 @@ public class Mill {
             this.gameState = GameState.SET;
         } else if (this.playerOne.getAmountOfPieces() < 3 || this.playerTwo.getAmountOfPieces() < 3) {
             this.gameState = GameState.OVER;
-        } else if (this.getCurrentPlayerColor() == 1 && this.playerOne.getAmountOfPieces() == 3
-                || this.getCurrentPlayerColor() == 2 && this.playerTwo.getAmountOfPieces() == 3) {
+        } else if (this.getCurrentPlayerColor() == this.playerOne.getColor() && this.playerOne.getAmountOfPieces() == 3
+                || this.getCurrentPlayerColor() == this.playerTwo.getColor() && this.playerTwo.getAmountOfPieces() == 3) {
             this.gameState = GameState.JUMP;
         } else {
             this.gameState = GameState.MOVE;

@@ -48,8 +48,8 @@ public class Game {
         UserRepository userRepository = new UserRepository();
 
         if (LoginHelper.getInstance().getCurrentUserId().equals(winnerId)) {
-            return "WIN against " + userRepository.findById(loserId).getUsername();
+            return "WIN against " + userRepository.findById(loserId).getAlias();
         }
-        return "LOSE against " + userRepository.findById(winnerId).getUsername();
+        return "LOSE against " + userRepository.findById(winnerId).getAlias();
     }
 }

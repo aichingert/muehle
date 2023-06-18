@@ -69,7 +69,7 @@ public class HomeController {
         List<Game> allGames = gameRepository.findAllGamesByUserId(LoginHelper.getInstance().getCurrentUserId());
         gamesLv.setItems(FXCollections.observableList(allGames));
 
-        if (allGames.size() == 0) {
+        if (allGames.isEmpty()) {
             gamesLv.setStyle("-fx-background-color: #20262b;");
         }
 
