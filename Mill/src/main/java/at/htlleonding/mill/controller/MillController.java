@@ -9,6 +9,7 @@ import at.htlleonding.mill.repositories.MoveRepository;
 import at.htlleonding.mill.repositories.ReplayRepository;
 import at.htlleonding.mill.repositories.UserRepository;
 import at.htlleonding.mill.view.GameBoard;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -298,5 +299,11 @@ public class MillController {
         double aSixth = boardSize / 6;
 
         return new double[]{50 + pos.getX() * ((3 - pos.getZ()) * aSixth) + pos.getZ() * aSixth, 50 + pos.getY() * ((3 - pos.getZ()) * aSixth) + pos.getZ() * aSixth};
+    }
+
+    @FXML
+    private void onBtnCancel(ActionEvent actionEvent) throws IOException {
+        Stage stage = (Stage) lblPhase.getScene().getWindow();
+        stage.setScene(new Scene(loadFXML("home"), 900, 900));
     }
 }

@@ -11,6 +11,7 @@ public class User {
     private String password;
     private String alias;
     private SimpleIntegerProperty currentRank;
+    private int winCount;
 
     public User(String username, String password, String alias) {
         this.username = username;
@@ -19,11 +20,12 @@ public class User {
         currentRank = new SimpleIntegerProperty();
     }
 
-    public User(String username, String password, String alias, int rank) {
+    public User(String username, String password, String alias, int rank, int winCount) {
         this.username = username;
         this.password = password;
         this.alias = alias;
         currentRank = new SimpleIntegerProperty(rank);
+        this.winCount = winCount;
     }
 
     public void setId(Long id) {
@@ -60,6 +62,6 @@ public class User {
 
     @Override
     public String toString() {
-        return currentRank.get() + " " + username;
+        return currentRank.get() + " " + username + " (" + winCount + " W)";
     }
 }

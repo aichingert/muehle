@@ -16,8 +16,8 @@
             <Label text="Password: " />
         </VBox>
         <VBox alignment="CENTER" spacing="20.0">
-            <TextField fx:id="username" onKeyPressed="#onKeyPressedLogin"/>
-            <PasswordField  fx:id="password" onKeyPressed="#onKeyPressedLogin"/>
+            <TextField fx:id="username" onKeyPressed="#onKeyPressedLogin" promptText="e.g. Max"/>
+            <PasswordField  fx:id="password" onKeyPressed="#onKeyPressedLogin" promptText="e.g. 12345678"/>
         </VBox>
     </HBox>
     <Button fx:id="loginBtn" text="Login" onAction="#onLoginBtn" />

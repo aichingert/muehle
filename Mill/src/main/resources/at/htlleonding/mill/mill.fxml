@@ -8,26 +8,29 @@
 <?import at.htlleonding.mill.view.GameBoard?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
+<VBox spacing="70.0" xmlns:fx="http://javafx.com/fxml"
       fx:controller="at.htlleonding.mill.controller.MillController"
       stylesheets="/style.css">
   <padding>
     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
   </padding>
 
-  <Label fx:id="lblPhase" styleClass="header">You can SET</Label>
+  <Button fx:id="cancelBtn" onAction="#onBtnCancel">Cancel</Button>
 
-  <HBox spacing="40" alignment="CENTER">
-    <VBox spacing="8" alignment="CENTER">
-      <Label fx:id="lblPlayer1" alignment="CENTER"/>
-      <Label fx:id="lblPieces1" alignment="CENTER">Pieces on board: 0</Label>
-    </VBox>
-    <VBox spacing="8" alignment="CENTER">
-      <Label fx:id="lblPlayer2" alignment="CENTER"/>
-      <Label fx:id="lblPieces2" alignment="CENTER">Pieces on board: 0</Label>
-    </VBox>
-  </HBox>
+  <VBox alignment="CENTER" spacing="20">
+    <Label fx:id="lblPhase" styleClass="header">You can SET</Label>
 
-  <GameBoard fx:id="gameBoard" onMouseClicked="#playerInputEvent" maxHeight="400" maxWidth="400" minHeight="400" minWidth="400" />
+    <HBox spacing="40" alignment="CENTER">
+      <VBox spacing="8" alignment="CENTER">
+        <Label fx:id="lblPlayer1" alignment="CENTER"/>
+        <Label fx:id="lblPieces1" alignment="CENTER">Pieces on board: 0</Label>
+      </VBox>
+      <VBox spacing="8" alignment="CENTER">
+        <Label fx:id="lblPlayer2" alignment="CENTER"/>
+        <Label fx:id="lblPieces2" alignment="CENTER">Pieces on board: 0</Label>
+      </VBox>
+    </HBox>
 
+    <GameBoard fx:id="gameBoard" onMouseClicked="#playerInputEvent" maxHeight="400" maxWidth="400" minHeight="400" minWidth="400" />
+  </VBox>
 </VBox>
