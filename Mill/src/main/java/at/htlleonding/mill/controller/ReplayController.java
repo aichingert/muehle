@@ -6,11 +6,18 @@ import at.htlleonding.mill.model.Replay;
 import at.htlleonding.mill.model.helper.CurrentReplay;
 import at.htlleonding.mill.view.GameBoard;
 import javafx.event.ActionEvent;
+import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.fxml.FXML;
+import javafx.stage.Stage;
+
+import java.io.IOException;
+
+import static at.htlleonding.mill.App.loadFXML;
 
 public class ReplayController {
-    public GameBoard gameBoard;
+    @FXML
+    private GameBoard gameBoard;
     private Color currentColor;
 
     @FXML
@@ -19,7 +26,8 @@ public class ReplayController {
         CurrentReplay.getInstance().fillMoves();
     }
 
-    public void nextMove(ActionEvent actionEvent) {
+    @FXML
+    private void nextMove(ActionEvent actionEvent) {
         Replay replay = CurrentReplay.getInstance().getNext();
 
         if (replay == null) {
@@ -50,7 +58,8 @@ public class ReplayController {
         currentColor = inverseCurrentColor();
     }
 
-    public void previousMove(ActionEvent actionEvent) {
+    @FXML
+    private void previousMove(ActionEvent actionEvent) {
         Replay replay = CurrentReplay.getInstance().getPrevious();
 
         if (replay == null) {
@@ -70,19 +79,17 @@ public class ReplayController {
             // Fx and Fy == -1 => TAKE
         } else if (move.getFx() == -1.0 && move.getFy() == -1.0) {
             System.out.println("TAKE");
-            gameBoard.drawIntersection(move.getTx(), move.getTy(), currentColor, 9);
             currentColor = inverseCurrentColor();
+            gameBoard.drawIntersection(move.getTx(), move.getTy(), currentColor, 9);
 
             // Normal move phase
         } else {
             System.out.println("NORMAL");
             gameBoard.getChildren().remove(
-                    gameBoard.getPieceFromSelectedCoordinates(move.getTx(), move.getTy(),currentColor)
+                    gameBoard.getPieceFromSelectedCoordinates(move.getTx(), move.getTy(), currentColor)
             );
             gameBoard.drawIntersection(move.getFx(), move.getFy(), currentColor, 9);
         }
-
-        currentColor = inverseCurrentColor();
     }
 
     private Color colorFromCounter(int nth) {
@@ -91,5 +98,11 @@ public class ReplayController {
 
     private Color inverseCurrentColor() {
         return currentColor == Color.WHITE ? Color.GRAY : Color.WHITE;
+    }
+
+    @FXML
+    private void onBtnBack(ActionEvent actionEvent) throws IOException {
+        Stage stage = (Stage) gameBoard.getScene().getWindow();
+        stage.setScene(new Scene(loadFXML("home"), 900, 900));
     }
 }

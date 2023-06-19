@@ -49,8 +49,9 @@ public class CurrentReplay {
     }
 
     public Replay getPrevious() {
+        boolean isAtBeginning = this.counter - 1 == -1;
         this.counter = Math.max(this.counter - 1, 0);
-        return this.moves.get(this.counter);
+        return isAtBeginning ? null : this.moves.get(this.counter);
     }
 
     public void setGameId(Long gameId) {
