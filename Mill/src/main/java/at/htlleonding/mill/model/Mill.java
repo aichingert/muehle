@@ -61,8 +61,7 @@ public class Mill {
 
         List<Position> possibleMoves = Logic.getMoves(this, from);
 
-        if (this.gameState == GameState.JUMP && this.getValueAt(to) != 0
-        || this.gameState != GameState.JUMP && !possibleMoves.contains(to)) {
+        if (!possibleMoves.contains(to)) {
             return false;
         }
 

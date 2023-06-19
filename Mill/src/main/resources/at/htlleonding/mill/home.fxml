@@ -34,7 +34,7 @@
                     </VBox>
                 </HBox>
 
-                <Button alignment="CENTER" fx:id="botBtn">Bot</Button>
+                <Button alignment="CENTER" fx:id="botBtn" onAction="#onBtnBot">Bot</Button>
                 <Button alignment="CENTER" fx:id="replayBtn" onAction="#onBtnReplay">Replay</Button>
             </VBox>
 

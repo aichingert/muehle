@@ -43,9 +43,11 @@ public class HomeController {
     @FXML
     private TextField searchTextField;
     private FilteredList<String> aliasesFilteredList;
+    private UserRepository userRepository;
 
     @FXML
     private void initialize() {
+        userRepository = new UserRepository();
         searchTextField.setPromptText("Search");
 
         //aliasLabel.getScene().getStylesheets().add("style.css");
@@ -57,8 +59,6 @@ public class HomeController {
             }
         });
 
-
-        UserRepository userRepository = new UserRepository();
         String currentUserAlias = userRepository.findById(LoginHelper.getInstance().getCurrentUserId()).getAlias();
 
         aliasesFilteredList = new FilteredList<>(FXCollections.observableList(userRepository
@@ -92,7 +92,6 @@ public class HomeController {
         Long player1Id = LoginHelper.getInstance().getCurrentUserId();
 
         String player2Alias = comboBoxPlayer2.getSelectionModel().getSelectedItem();
-        UserRepository userRepository = new UserRepository();
         User player2 = userRepository.findByAlias(player2Alias);
 
         if (player2 == null || player2Alias.isEmpty() || player2Alias.isBlank()) {
@@ -127,7 +126,6 @@ public class HomeController {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         DialogPane dialogPane = alert.getDialogPane();
 
-        UserRepository userRepository = new UserRepository();
         List<User> allUsers = userRepository.findAll();
         ListView<User> lv = new ListView<>();
         lv.setItems(FXCollections.observableList(allUsers));
@@ -159,5 +157,13 @@ public class HomeController {
         comboBoxPlayer2.getItems().clear();
         comboBoxPlayer2.getItems().addAll(aliasesFilteredList);
         comboBoxPlayer2.show();
+    }
+
+    public void onBtnBot(ActionEvent actionEvent) throws IOException {
+        CurrentGame.getInstance().setPlayer1Id(LoginHelper.getInstance().getCurrentUserId());
+        CurrentGame.getInstance().setPlayer2Id(userRepository.findByAlias("Bot").getId());
+
+        Stage stage = (Stage) aliasLabel.getScene().getWindow();
+        stage.setScene(new Scene(loadFXML("bot"), 800, 800));
     }
 }

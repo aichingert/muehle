@@ -1,5 +1,6 @@
 package at.htlleonding.mill.bot;
 
+import at.htlleonding.mill.model.Difficulties;
 import at.htlleonding.mill.model.Mill;
 import at.htlleonding.mill.model.helper.Logic;
 import at.htlleonding.mill.model.helper.Position;
@@ -10,6 +11,25 @@ import java.util.stream.IntStream;
 import static at.htlleonding.mill.model.helper.Logic.directions;
 
 public class BruteForce {
+    private Difficulties difficulty;
+    private static BruteForce instance = null;
+
+    private BruteForce() {
+        difficulty = Difficulties.EASY;
+    }
+
+    public static BruteForce getInstance() {
+        if (instance == null) {
+            instance = new BruteForce();
+        }
+
+        return instance;
+    }
+
+    public void setDifficulty(Difficulties difficulty) {
+        this.difficulty = difficulty;
+    }
+
     public static Position[] nextMove(int depth, Mill game, int color) {
         /* Idea:
          * 1. Check if depth equals zero, if it does then evaluate Board

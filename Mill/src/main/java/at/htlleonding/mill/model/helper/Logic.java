@@ -40,6 +40,22 @@ public class Logic {
      */
     public static List<Position> getMoves(Mill game, Position position) {
         List<Position> possiblePositions = new ArrayList<>();
+
+        if (game.getGameState().equals(GameState.JUMP)) {
+            for (int i = 0; i < game.BOARD_SIZE; i++) {
+                for (int j = 0; j < game.BOARD_SIZE; j++) {
+                    for (int k = 0; k < game.BOARD_SIZE; k++) {
+                        Position pos = new Position(i, j, k);
+                        if (game.getValueAt(pos) == 0) {
+                            possiblePositions.add(pos);
+                        }
+                    }
+                }
+            }
+
+            return possiblePositions;
+        }
+
         final int boardMax = 2;
         final int boardMin = 0;
 
