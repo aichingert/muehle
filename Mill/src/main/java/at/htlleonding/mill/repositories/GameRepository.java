@@ -13,12 +13,13 @@ public class GameRepository {
 
     public void insert(Game game) {
         try (Connection connection = dataSource.getConnection()) {
-            String sql = "INSERT INTO M_GAME (G_WINNER, G_LOSER) VALUES (?,?)";
+            String sql = "INSERT INTO M_GAME (G_WINNER, G_LOSER, G_IS_WINNER_WHITE) VALUES (?,?,?)";
 
             PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
             statement.setLong(1, game.getWinnerId());
             statement.setLong(2, game.getLoserId());
+            statement.setBoolean(3, game.isWinnerWhite());
 
             if (statement.executeUpdate() == 0) {
                 throw new SQLException("Insert of M_GAME failed, no rows affected");
@@ -52,7 +53,8 @@ public class GameRepository {
                 Game game = new Game(
                         result.getLong("G_ID"),
                         result.getLong("G_WINNER"),
-                        result.getLong("G_LOSER"));
+                        result.getLong("G_LOSER"),
+                        result.getBoolean("G_IS_WINNER_WHITE"));
 
                 games.add(game);
             }
@@ -61,5 +63,30 @@ public class GameRepository {
         }
 
         return games;
+    }
+
+    public Game findById(long id) {
+        Game game = null;
+
+        try (Connection connection = dataSource.getConnection()) {
+            String sql = "SELECT * FROM M_GAME WHERE G_ID=?";
+
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setLong(1, id);
+            ResultSet result = statement.executeQuery();
+
+            if (result.next()) {
+                game = new Game(
+                        result.getLong("G_ID"),
+                        result.getLong("G_WINNER"),
+                        result.getLong("G_LOSER"),
+                        result.getBoolean("G_IS_WINNER_WHITE")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return game;
     }
 }

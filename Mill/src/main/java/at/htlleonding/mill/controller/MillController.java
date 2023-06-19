@@ -49,59 +49,19 @@ public class MillController {
     boolean playerOneIsWhite;
     private MoveRepository moveRepository;
     private ReplayRepository replayRepository;
+    private UserRepository userRepository;
 
     @FXML
     private void initialize() {
-        UserRepository userRepository = new UserRepository();
+        this.userRepository = new UserRepository();
         this.moveRepository = new MoveRepository();
         this.replayRepository = new ReplayRepository();
+
+        playerOneIsWhite = Math.random() > 0.5;
         String player1Name = userRepository.findById(CurrentGame.getInstance().getPlayer1Id()).getAlias();
         String player2Name = userRepository.findById(CurrentGame.getInstance().getPlayer2Id()).getAlias();
 
-        playerOneIsWhite = Math.random() > 0.5;
-        this.playerOne = new Player(playerOneIsWhite ? 1 : 2);
-        this.playerTwo = new Player(playerOneIsWhite ? 2 : 1);
-
-        if (playerOneIsWhite) {
-            lblPlayer1.setText(player1Name);
-            lblPlayer2.setText(player2Name);
-
-            this.playerOne.amountOfPiecesProperty().addListener((observableValue, number, t1) -> {
-                lblPieces1.setText("Pieces on board: " + observableValue.getValue().toString());
-            });
-            this.playerTwo.amountOfPiecesProperty().addListener((observableValue, number, t1) -> {
-                lblPieces2.setText("Pieces on board: " + observableValue.getValue().toString());
-            });
-
-            this.playerOne.isPlayerTurnProperty().addListener((observableValue, aBoolean, t1) -> {
-                lblPlayer1.setDisable(!observableValue.getValue());
-                lblPieces1.setDisable(!observableValue.getValue());
-            });
-            this.playerTwo.isPlayerTurnProperty().addListener((observableValue, aBoolean, t1) -> {
-                lblPlayer2.setDisable(!observableValue.getValue());
-                lblPieces2.setDisable(!observableValue.getValue());
-            });
-        }
-        else {
-            lblPlayer1.setText(player2Name);
-            lblPlayer2.setText(player1Name);
-
-            this.playerTwo.amountOfPiecesProperty().addListener((observableValue, number, t1) -> {
-                lblPieces1.setText("Pieces on board: " + observableValue.getValue().toString());
-            });
-            this.playerOne.amountOfPiecesProperty().addListener((observableValue, number, t1) -> {
-                lblPieces2.setText("Pieces on board: " + observableValue.getValue().toString());
-            });
-
-            this.playerOne.isPlayerTurnProperty().addListener((observableValue, aBoolean, t1) -> {
-                lblPlayer2.setDisable(!observableValue.getValue());
-                lblPieces2.setDisable(!observableValue.getValue());
-            });
-            this.playerTwo.isPlayerTurnProperty().addListener((observableValue, aBoolean, t1) -> {
-                lblPlayer1.setDisable(!observableValue.getValue());
-                lblPieces1.setDisable(!observableValue.getValue());
-            });
-        }
+        setListenerForPlayerOrder(playerOneIsWhite, player1Name, player2Name);
 
         this.game = new Mill(playerOne, playerTwo);
         this.currentlySelected = null;
@@ -146,13 +106,13 @@ public class MillController {
 
         GameRepository gameRepository = new GameRepository();
         Game game;
-        if (winnerColor == 1 && playerOneIsWhite) {
-            game = new Game(CurrentGame.getInstance().getPlayer1Id(), CurrentGame.getInstance().getPlayer2Id());
-            System.out.println("Links gwonna");
+        if ((winnerColor == 1 && playerOneIsWhite) || (winnerColor == 2 && !playerOneIsWhite)) {
+            game = new Game(CurrentGame.getInstance().getPlayer1Id(), CurrentGame.getInstance().getPlayer2Id(), winnerColor == 1);
+            System.out.println("Angemeldeter gwonna");
         }
         else {
-            game = new Game(CurrentGame.getInstance().getPlayer2Id(), CurrentGame.getInstance().getPlayer1Id());
-            System.out.println("Rechts gwonna");
+            game = new Game(CurrentGame.getInstance().getPlayer2Id(), CurrentGame.getInstance().getPlayer1Id(), winnerColor == 1);
+            System.out.println("Andere gwonna");
         }
         gameRepository.insert(game);
 
@@ -299,6 +259,52 @@ public class MillController {
         double aSixth = boardSize / 6;
 
         return new double[]{50 + pos.getX() * ((3 - pos.getZ()) * aSixth) + pos.getZ() * aSixth, 50 + pos.getY() * ((3 - pos.getZ()) * aSixth) + pos.getZ() * aSixth};
+    }
+
+    private void setListenerForPlayerOrder(boolean playerOneIsWhite, String player1Name, String player2Name) {
+        this.playerOne = new Player(playerOneIsWhite ? 1 : 2);
+        this.playerTwo = new Player(playerOneIsWhite ? 2 : 1);
+
+        if (playerOneIsWhite) {
+            lblPlayer1.setText(player1Name);
+            lblPlayer2.setText(player2Name);
+
+            this.playerOne.amountOfPiecesProperty().addListener((observableValue, number, t1) -> {
+                lblPieces1.setText("Pieces on board: " + observableValue.getValue().toString());
+            });
+            this.playerTwo.amountOfPiecesProperty().addListener((observableValue, number, t1) -> {
+                lblPieces2.setText("Pieces on board: " + observableValue.getValue().toString());
+            });
+
+            this.playerOne.isPlayerTurnProperty().addListener((observableValue, aBoolean, t1) -> {
+                lblPlayer1.setDisable(!observableValue.getValue());
+                lblPieces1.setDisable(!observableValue.getValue());
+            });
+            this.playerTwo.isPlayerTurnProperty().addListener((observableValue, aBoolean, t1) -> {
+                lblPlayer2.setDisable(!observableValue.getValue());
+                lblPieces2.setDisable(!observableValue.getValue());
+            });
+        }
+        else {
+            lblPlayer1.setText(player2Name);
+            lblPlayer2.setText(player1Name);
+
+            this.playerTwo.amountOfPiecesProperty().addListener((observableValue, number, t1) -> {
+                lblPieces1.setText("Pieces on board: " + observableValue.getValue().toString());
+            });
+            this.playerOne.amountOfPiecesProperty().addListener((observableValue, number, t1) -> {
+                lblPieces2.setText("Pieces on board: " + observableValue.getValue().toString());
+            });
+
+            this.playerOne.isPlayerTurnProperty().addListener((observableValue, aBoolean, t1) -> {
+                lblPlayer2.setDisable(!observableValue.getValue());
+                lblPieces2.setDisable(!observableValue.getValue());
+            });
+            this.playerTwo.isPlayerTurnProperty().addListener((observableValue, aBoolean, t1) -> {
+                lblPlayer1.setDisable(!observableValue.getValue());
+                lblPieces1.setDisable(!observableValue.getValue());
+            });
+        }
     }
 
     @FXML

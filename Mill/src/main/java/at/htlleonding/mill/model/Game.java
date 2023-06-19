@@ -7,16 +7,19 @@ public class Game {
     Long gameId;
     Long winnerId;
     Long loserId;
+    boolean isWinnerWhite;
 
-    public Game(Long gameId, Long winnerId, Long loserId) {
+    public Game(Long gameId, Long winnerId, Long loserId, boolean isWinnerWhite) {
         this.gameId = gameId;
         this.winnerId = winnerId;
         this.loserId = loserId;
+        this.isWinnerWhite = isWinnerWhite;
     }
 
-    public Game(Long winnerId, Long loserId) {
+    public Game(Long winnerId, Long loserId, boolean isWinnerWhite) {
         this.winnerId = winnerId;
         this.loserId = loserId;
+        this.isWinnerWhite = isWinnerWhite;
     }
 
     public Long getGameId() {
@@ -41,6 +44,14 @@ public class Game {
 
     public void setLoserId(Long loserId) {
         this.loserId = loserId;
+    }
+
+    public boolean isWinnerWhite() {
+        return isWinnerWhite;
+    }
+
+    public void setWinnerWhite(boolean winnerWhite) {
+        isWinnerWhite = winnerWhite;
     }
 
     @Override

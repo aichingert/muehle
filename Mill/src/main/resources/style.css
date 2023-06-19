@@ -61,6 +61,31 @@ Button:hover {
                 -fx-scale-y 2s ease;*/
 }
 
+Circle {
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
+}
+
+Line {
+    -fx-stroke-width: 2.5px;
+}
+
+GameBoard {
+    -fx-background-color: #cc9d65;
+    -fx-background-radius: 50px;
+    -fx-border-radius: 50px;
+}
+
+TextField, PasswordField {
+    -fx-background-color: #38424b;
+    -fx-text-fill: white;
+}
+
+#searchTextField {
+    -fx-border-radius: 40px;
+    -fx-background-radius: 60px;
+}
+
+/*Listview styling*/
 .list-view {
     -fx-background-radius: 40px;
     -fx-background-color: transparent;
@@ -89,30 +114,6 @@ Button:hover {
 .list-cell:empty {
     -fx-background-color: #38424b;
     -fx-border-width: 0px;
-}
-
-Circle {
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
-}
-
-Line {
-    -fx-stroke-width: 2.5px;
-}
-
-GameBoard {
-    -fx-background-color: #cc9d65;
-    -fx-background-radius: 50px;
-    -fx-border-radius: 50px;
-}
-
-TextField, PasswordField {
-    -fx-background-color: #38424b;
-    -fx-text-fill: white;
-}
-
-#searchTextField {
-    -fx-border-radius: 40px;
-    -fx-background-radius: 60px;
 }
 
 /*Following is only for scroll bar*/

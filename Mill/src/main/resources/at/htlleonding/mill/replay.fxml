@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Label?>
 <VBox spacing="120.0" xmlns:fx="http://javafx.com/fxml"
       fx:controller="at.htlleonding.mill.controller.ReplayController"
       stylesheets="/style.css">
@@ -15,6 +16,19 @@
     <Button fx:id="backBtn" onAction="#onBtnBack">Back</Button>
 
     <VBox alignment="CENTER" spacing="20">
+        <Label styleClass="header">Replay</Label>
+
+        <HBox spacing="40" alignment="CENTER">
+            <VBox spacing="8" alignment="CENTER">
+                <Label fx:id="lblPlayer1" alignment="CENTER"/>
+                <Label fx:id="lblPieces1" alignment="CENTER">Pieces on board: 0</Label>
+            </VBox>
+            <VBox spacing="8" alignment="CENTER">
+                <Label fx:id="lblPlayer2" alignment="CENTER"/>
+                <Label fx:id="lblPieces2" alignment="CENTER">Pieces on board: 0</Label>
+            </VBox>
+        </HBox>
+
         <GameBoard fx:id="gameBoard" maxHeight="400" maxWidth="400" minHeight="400" minWidth="400" />
 
         <HBox alignment="CENTER" spacing="40.0">

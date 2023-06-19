@@ -88,7 +88,7 @@ public class UserRepository implements Persistent<User> {
         int count = 1;
 
         try (Connection connection = dataSource.getConnection()) {
-            String sql = "SELECT mu.*, count(*) as \"cnt\" FROM M_USER mu LEFT OUTER JOIN M_GAME mg ON mu.U_ID = mg.G_WINNER GROUP BY mu.U_ID, mu.U_USERNAME, mu.U_ALIAS, mu.U_PASSWORD ORDER BY count(mg.G_WINNER) DESC";
+            String sql = "SELECT mu.*, count(mg.G_WINNER) as \"cnt\" FROM M_USER mu LEFT OUTER JOIN M_GAME mg ON mu.U_ID = mg.G_WINNER GROUP BY mu.U_ID, mu.U_USERNAME, mu.U_ALIAS, mu.U_PASSWORD ORDER BY count(mg.G_WINNER) DESC";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet result = preparedStatement.executeQuery();
 
