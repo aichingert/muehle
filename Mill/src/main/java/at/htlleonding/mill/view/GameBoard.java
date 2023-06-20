@@ -143,4 +143,22 @@ public class GameBoard extends Pane {
 
         return new Position(posX, posY, posZ);
     }
+
+    public void drawCircleAtPos(Position pos, int currentPlayerColor) {
+        double[] xy = positionToRaw(pos);
+
+        if (currentPlayerColor == 1) {
+            this.drawIntersection(xy[0], xy[1], Color.WHITE, 9);
+        }
+        else {
+            this.drawIntersection(xy[0], xy[1], Color.GRAY, 9);
+        }
+    }
+
+    public double[] positionToRaw(Position pos) {
+        double boardSize = Math.min(this.getWidth(), this.getHeight()) - 2 * 50;
+        double aSixth = boardSize / 6;
+
+        return new double[]{50 + pos.getX() * ((3 - pos.getZ()) * aSixth) + pos.getZ() * aSixth, 50 + pos.getY() * ((3 - pos.getZ()) * aSixth) + pos.getZ() * aSixth};
+    }
 }

@@ -9,7 +9,7 @@ public class Mill {
     public final int BOARD_SIZE = 3;
     private int[][][] board;
     private int moveCounter;
-    private GameState gameState = GameState.SET;
+    private GameState gameState;
     private final Player playerOne;
     private final Player playerTwo;
 
@@ -18,6 +18,7 @@ public class Mill {
         this.playerTwo = playerTwo;
         this.board = new int[BOARD_SIZE][BOARD_SIZE][BOARD_SIZE];
         this.moveCounter = 0;
+        this.gameState = GameState.SET;
     }
 
     public boolean setPiece(int color, Position position) {
@@ -41,9 +42,9 @@ public class Mill {
         return true;
     }
 
-    public void removePiece(Position position) {
-        if (gameState == GameState.TAKE && getValueAt(position) == (getCurrentPlayerColor() == 1 ? 2 : 1)) {
-            if (this.getCurrentPlayerColor() == this.playerOne.getColor()) {
+    public void removePiece(Position position, int current) {
+        if (gameState == GameState.TAKE && getValueAt(position) == (current == 1 ? 2 : 1)) {
+            if (current == this.playerOne.getColor()) {
                 this.playerTwo.removePiece();
             } else {
                 this.playerOne.removePiece();

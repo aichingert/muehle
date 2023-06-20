@@ -84,7 +84,7 @@ public class ReplayController {
             // For player order
             game.switchTurn();
             game.setGameState(GameState.TAKE);
-            game.removePiece(gameBoard.convertCoordinateToPosition(move.getTx(), move.getTy()));
+            game.removePiece(gameBoard.convertCoordinateToPosition(move.getTx(), move.getTy()), game.getCurrentPlayerColor());
 
         // Normal move phase
         } else {
@@ -96,7 +96,7 @@ public class ReplayController {
             // For player order
             game.switchTurn();
             game.setGameState(GameState.TAKE);
-            game.removePiece(gameBoard.convertCoordinateToPosition(move.getFx(), move.getFy()));
+            game.removePiece(gameBoard.convertCoordinateToPosition(move.getFx(), move.getFy()), game.getCurrentPlayerColor());
             game.setPiece(currentColor.equals(Color.WHITE) ? 1 : 2, gameBoard.convertCoordinateToPosition(move.getTx(), move.getTy()));
             game.switchTurn();
         }
@@ -134,7 +134,7 @@ public class ReplayController {
             // For player order
             game.switchTurn();
             game.setGameState(GameState.TAKE);
-            game.removePiece(gameBoard.convertCoordinateToPosition(move.getFx(), move.getFy()));
+            game.removePiece(gameBoard.convertCoordinateToPosition(move.getFx(), move.getFy()), game.getCurrentPlayerColor());
             game.switchTurn();
 
             // Fx and Fy == -1 => TAKE
@@ -158,7 +158,7 @@ public class ReplayController {
             // For player order
             game.switchTurn();
             game.setGameState(GameState.TAKE);
-            game.removePiece(gameBoard.convertCoordinateToPosition(move.getTx(), move.getTy()));
+            game.removePiece(gameBoard.convertCoordinateToPosition(move.getTx(), move.getTy()), game.getCurrentPlayerColor());
             game.setPiece(currentColor.equals(Color.WHITE) ? 1 : 2, gameBoard.convertCoordinateToPosition(move.getFx(), move.getFy()));
             game.switchTurn();
         }

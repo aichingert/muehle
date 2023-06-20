@@ -66,7 +66,7 @@ public class MillController {
         this.game = new Mill(playerOne, playerTwo);
         this.currentlySelected = null;
         this.takeablePieces = null;
-        this.movesForReplay = new ArrayList<Move>();
+        this.movesForReplay = new ArrayList<>();
 
         lblPlayer2.setDisable(true);
         lblPieces2.setDisable(true);
@@ -155,12 +155,12 @@ public class MillController {
             return false;
         }
 
-        double[] fxy = positionToRaw(from);
-        double[] txy = positionToRaw(to);
+        double[] fxy = gameBoard.positionToRaw(from);
+        double[] txy = gameBoard.positionToRaw(to);
 
         this.movesForReplay.add(new Move(fxy[0], fxy[1], txy[0], txy[1]));
         this.gameBoard.getChildren().remove(this.currentlySelected);
-        drawCircleAtPos(to);
+        gameBoard.drawCircleAtPos(to, game.getCurrentPlayerColor());
 
         if (Logic.activatesMill(this.game, from, to)) {
             this.game.setGameState(GameState.TAKE);
@@ -190,12 +190,12 @@ public class MillController {
         Position pos = gameBoard.convertCoordinateToPosition(x, y);
 
         if (this.takeablePieces.contains(pos)) {
-            double[] xy = positionToRaw(pos);
+            double[] xy = gameBoard.positionToRaw(pos);
             this.movesForReplay.add(new Move(-1, -1, xy[0], xy[1]));
 
             Circle circle = gameBoard.getPieceFromSelectedCoordinates(x, y, Color.RED);
             gameBoard.getChildren().remove(circle);
-            game.removePiece(pos);
+            game.removePiece(pos, game.getCurrentPlayerColor());
             return true;
         }
 
@@ -211,9 +211,9 @@ public class MillController {
         Position pos = gameBoard.convertCoordinateToPosition(x, y);
 
         if (game.setPiece(game.getCurrentPlayerColor(), pos)) {
-            double[] xy = positionToRaw(pos);
+            double[] xy = gameBoard.positionToRaw(pos);
             this.movesForReplay.add(new Move(xy[0], xy[1], 0, 0));
-            drawCircleAtPos(pos);
+            gameBoard.drawCircleAtPos(pos, game.getCurrentPlayerColor());
 
             if (Logic.activatesMill(game, null, pos)) {
                 game.setGameState(GameState.TAKE);
@@ -233,32 +233,13 @@ public class MillController {
         this.currentlySelected = null;
         this.takeablePieces.stream()
                 .map(p -> {
-                    double[] xy = positionToRaw(p);
-                    Circle c = gameBoard.getPieceFromSelectedCoordinates(xy[0], xy[1], fColor);
-                    return c;
+                    double[] xy = gameBoard.positionToRaw(p);
+                    return gameBoard.getPieceFromSelectedCoordinates(xy[0], xy[1], fColor);
                 })
                 .forEach(c -> {
                     if (c != null)
                         c.setFill(tColor);
                 });
-    }
-
-    private void drawCircleAtPos(Position pos) {
-        double[] xy = positionToRaw(pos);
-
-        if (game.getCurrentPlayerColor() == 1) {
-            gameBoard.drawIntersection(xy[0], xy[1], Color.WHITE, 9);
-        }
-        else {
-            gameBoard.drawIntersection(xy[0], xy[1], Color.GRAY, 9);
-        }
-    }
-
-    private double[] positionToRaw(Position pos) {
-        double boardSize = Math.min(gameBoard.getWidth(), gameBoard.getHeight()) - 2 * 50;
-        double aSixth = boardSize / 6;
-
-        return new double[]{50 + pos.getX() * ((3 - pos.getZ()) * aSixth) + pos.getZ() * aSixth, 50 + pos.getY() * ((3 - pos.getZ()) * aSixth) + pos.getZ() * aSixth};
     }
 
     private void setListenerForPlayerOrder(boolean playerOneIsWhite, String player1Name, String player2Name) {
