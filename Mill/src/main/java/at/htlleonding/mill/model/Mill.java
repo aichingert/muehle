@@ -43,12 +43,9 @@ public class Mill {
     }
 
     public void removePiece(Position position, int current) {
-        System.out.println(gameState);
-        System.out.println(getValueAt(position));
-        System.out.println(current);
         if (gameState == GameState.TAKE && getValueAt(position) == current) {
             System.out.println(current == this.playerOne.getColor());
-            if (current == this.playerOne.getColor()) {
+            if (getCurrentPlayerColor() == this.playerOne.getColor()) {
                 this.playerTwo.removePiece();
             } else {
                 this.playerOne.removePiece();

@@ -20,7 +20,7 @@
     <VBox styleClass="dark-background" alignment="CENTER" spacing="20" minHeight="600">
         <Label styleClass="header" alignment="CENTER">Mill - Home</Label>
 
-        <HBox alignment="CENTER" spacing="120.0">
+        <HBox alignment="CENTER" spacing="180.0">
             <VBox styleClass="dark-background" alignment="CENTER" spacing="20">
                 <Label alignment="CENTER">Your Matches</Label>
                 <ListView fx:id="gamesLv" onMouseClicked="#onClickGamesLv"/>
@@ -45,7 +45,7 @@
 
             <VBox styleClass="dark-background" alignment="CENTER" spacing="20">
                 <Label alignment="CENTER">Leaderboard</Label>
-                <ListView fx:id="leaderboardLv" onMouseClicked="#onClickLeaderboardLv" styleClass="lv" maxHeight="71"/>
+                <ListView fx:id="leaderboardLv" onMouseClicked="#onClickLeaderboardLv" styleClass="lv" maxHeight="68"/>
                 <Label>Your Position</Label>
                 <Label fx:id="currentPos" styleClass="currentPos" minWidth="250"/>
             </VBox>

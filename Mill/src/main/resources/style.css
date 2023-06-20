@@ -69,6 +69,11 @@ Line {
     -fx-stroke-width: 2.5px;
 }
 
+.track {
+    -fx-background-color: #cc9d65;
+    -fx-background-radius: 10px;
+}
+
 GameBoard {
     -fx-background-color: #cc9d65;
     -fx-background-radius: 50px;

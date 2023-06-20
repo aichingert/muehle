@@ -279,7 +279,7 @@ public class BotController {
 
         Circle circle = gameBoard.getPieceFromSelectedCoordinates(x, y, Color.RED);
         gameBoard.getChildren().remove(circle);
-        game.removePiece(pos, game.getCurrentPlayerColor());
+        game.removePiece(pos, game.getCurrentPlayerColor() == 1 ? 2 : 1);
         changeColorFromHighlightedPieces(Color.RED, game.getCurrentPlayerColor() == 1 ? Color.GRAY : Color.WHITE);
         playBotRound();
     }
@@ -347,5 +347,11 @@ public class BotController {
         alert.showAndWait();
         Stage stage = (Stage) lblPhase.getScene().getWindow();
         stage.setScene(new Scene(loadFXML("home"), 800, 800));
+    }
+
+    @FXML
+    private void onBtnCancel(ActionEvent actionEvent) throws IOException {
+        Stage stage = (Stage) lblPhase.getScene().getWindow();
+        stage.setScene(new Scene(loadFXML("home"), 900, 900));
     }
 }

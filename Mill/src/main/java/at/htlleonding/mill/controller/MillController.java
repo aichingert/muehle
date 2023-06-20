@@ -195,7 +195,7 @@ public class MillController {
 
             Circle circle = gameBoard.getPieceFromSelectedCoordinates(x, y, Color.RED);
             gameBoard.getChildren().remove(circle);
-            game.removePiece(pos, game.getCurrentPlayerColor());
+            game.removePiece(pos, game.getCurrentPlayerColor() == 1 ? 2 : 1);
             return true;
         }
 

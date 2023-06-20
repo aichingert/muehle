@@ -66,4 +66,8 @@ public class CurrentReplay {
     public int getCounter() {
         return this.counter;
     }
+
+    public List<Replay> getMoves() {
+        return moves;
+    }
 }

@@ -7,18 +7,36 @@ import at.htlleonding.mill.model.helper.LoginHelper;
 import at.htlleonding.mill.repositories.GameRepository;
 import at.htlleonding.mill.repositories.UserRepository;
 import at.htlleonding.mill.view.GameBoard;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.paint.Color;
 import javafx.fxml.FXML;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static at.htlleonding.mill.App.loadFXML;
 
 public class ReplayController {
+    @FXML
+    private Button btnAutomatic;
+    @FXML
+    private Button btnStop;
+    @FXML
+    private Button btnPrevious;
+    @FXML
+    private Button btnNext;
+    @FXML
+    private Slider slider;
     @FXML
     private GameBoard gameBoard;
     @FXML
@@ -33,6 +51,7 @@ public class ReplayController {
     private Player playerTwo;
     private Mill game;
     private Color currentColor;
+    private Timeline timeline;
     GameRepository gameRepository = new GameRepository();
     UserRepository userRepository = new UserRepository();
 
@@ -40,6 +59,7 @@ public class ReplayController {
     private void initialize() {
         currentColor = Color.WHITE;
         CurrentReplay.getInstance().fillMoves();
+        timeline = new Timeline();
 
         Game game = gameRepository.findById(CurrentReplay.getInstance().getGameId());
         Long loggedInUserId = LoginHelper.getInstance().getCurrentUserId();
@@ -84,7 +104,7 @@ public class ReplayController {
             // For player order
             game.switchTurn();
             game.setGameState(GameState.TAKE);
-            game.removePiece(gameBoard.convertCoordinateToPosition(move.getTx(), move.getTy()), game.getCurrentPlayerColor());
+            game.removePiece(gameBoard.convertCoordinateToPosition(move.getTx(), move.getTy()), game.getCurrentPlayerColor() == 1 ? 2 : 1);
 
         // Normal move phase
         } else {
@@ -96,7 +116,7 @@ public class ReplayController {
             // For player order
             game.switchTurn();
             game.setGameState(GameState.TAKE);
-            game.removePiece(gameBoard.convertCoordinateToPosition(move.getFx(), move.getFy()), game.getCurrentPlayerColor());
+            game.removePiece(gameBoard.convertCoordinateToPosition(move.getFx(), move.getFy()), game.getCurrentPlayerColor() == 1 ? 2 : 1);
             game.setPiece(currentColor.equals(Color.WHITE) ? 1 : 2, gameBoard.convertCoordinateToPosition(move.getTx(), move.getTy()));
             game.switchTurn();
         }
@@ -134,7 +154,7 @@ public class ReplayController {
             // For player order
             game.switchTurn();
             game.setGameState(GameState.TAKE);
-            game.removePiece(gameBoard.convertCoordinateToPosition(move.getFx(), move.getFy()), game.getCurrentPlayerColor());
+            game.removePiece(gameBoard.convertCoordinateToPosition(move.getFx(), move.getFy()), game.getCurrentPlayerColor() == 1 ? 2 : 1);
             game.switchTurn();
 
             // Fx and Fy == -1 => TAKE
@@ -158,7 +178,7 @@ public class ReplayController {
             // For player order
             game.switchTurn();
             game.setGameState(GameState.TAKE);
-            game.removePiece(gameBoard.convertCoordinateToPosition(move.getTx(), move.getTy()), game.getCurrentPlayerColor());
+            game.removePiece(gameBoard.convertCoordinateToPosition(move.getTx(), move.getTy()), game.getCurrentPlayerColor() == 1 ? 2 : 1);
             game.setPiece(currentColor.equals(Color.WHITE) ? 1 : 2, gameBoard.convertCoordinateToPosition(move.getFx(), move.getFy()));
             game.switchTurn();
         }
@@ -223,5 +243,31 @@ public class ReplayController {
     private void onBtnBack(ActionEvent actionEvent) throws IOException {
         Stage stage = (Stage) gameBoard.getScene().getWindow();
         stage.setScene(new Scene(loadFXML("home"), 900, 900));
+    }
+
+    @FXML
+    private void onBtnAutomatic(ActionEvent actionEvent) throws InterruptedException {
+        this.btnPrevious.setDisable(true);
+        this.btnNext.setDisable(true);
+        this.btnStop.setDisable(false);
+        this.btnAutomatic.setDisable(true);
+        double milliseconds = slider.getValue() * 1000;
+        System.out.println("SLIDDDDEEEEEEEEEEEERRR " + milliseconds);
+
+        timeline = new Timeline(new KeyFrame(Duration.millis(milliseconds), ev -> {
+            nextMove(null);
+        }));
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
+
+    }
+
+    @FXML
+    private void onBtnStopAutomatic(ActionEvent actionEvent) {
+        this.btnPrevious.setDisable(false);
+        this.btnNext.setDisable(false);
+        this.btnAutomatic.setDisable(false);
+        this.btnStop.setDisable(true);
+        this.timeline.stop();
     }
 }
