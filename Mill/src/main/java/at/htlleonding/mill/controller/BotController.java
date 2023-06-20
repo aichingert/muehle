@@ -153,7 +153,7 @@ public class BotController {
 
         switch (game.getGameState()) {
             case SET  -> setPieceAtSelectedLocation(x, y);
-            case MOVE, JUMP -> /*handleStateMoveAndJump(x, y);*/System.out.println();
+            case MOVE, JUMP -> handleStateMoveAndJump(x, y);
             case TAKE -> removePiecePlayer(x, y);
         }
 
@@ -218,6 +218,50 @@ public class BotController {
         }
     }
 
+    private void handleStateMoveAndJump(double x, double y) {
+        if (this.currentlySelected != null) {
+            moveSelectedPieceToNextPositionOrDropIt(x, y);
+            return;
+        }
+
+        this.currentlySelected = gameBoard.getPieceFromSelectedCoordinates(x, y, game.getCurrentPlayerColor() == 1 ? Color.WHITE : Color.GRAY);
+
+        if (this.currentlySelected != null && this.game.getGameState() != GameState.TAKE) {
+            this.currentlySelected.setFill(Color.RED);
+        }
+    }
+
+    private void moveSelectedPieceToNextPositionOrDropIt(double x, double y) {
+        this.currentlySelected.setFill(this.game.getCurrentPlayerColor() == 1 ? Color.WHITE : Color.GRAY);
+
+        if (!this.gameBoard.containsCoordinate(x, y)) {
+            this.currentlySelected = null;
+            return;
+        }
+
+        Position from = this.gameBoard.convertCoordinateToPosition(this.currentlySelected.getCenterX(), this.currentlySelected.getCenterY());
+        Position to   = this.gameBoard.convertCoordinateToPosition(x, y);
+
+        if (!game.movePiece(game.getCurrentPlayerColor(), from, to)) {
+            this.currentlySelected = null;
+            return;
+        }
+
+        double[] fxy = gameBoard.positionToRaw(from);
+        double[] txy = gameBoard.positionToRaw(to);
+
+        this.movesForReplay.add(new Move(fxy[0], fxy[1], txy[0], txy[1]));
+        this.gameBoard.getChildren().remove(this.currentlySelected);
+        gameBoard.drawCircleAtPos(to, game.getCurrentPlayerColor());
+
+        if (Logic.activatesMill(this.game, from, to)) {
+            this.game.setGameState(GameState.TAKE);
+            highlightTakeablePieces();
+        } else {
+            playBotRound();
+        }
+    }
+
     private void removePiecePlayer(double x, double y) {
         if (!gameBoard.containsCoordinate(x, y)) {
             return;
@@ -241,7 +285,7 @@ public class BotController {
 
     private void removePieceBot(int oppo) {
         Position toTake = BruteForce.getInstance().nextTake(game, oppo);
-        game.removePiece(toTake, oppo);
+        game.removePiece(toTake, oppo == 1 ? 2 : 1);
         double[] xy = gameBoard.positionToRaw(toTake);
         gameBoard.getChildren().remove(
                 gameBoard.getPieceFromSelectedCoordinates(xy[0], xy[1], oppo == 1 ? Color.WHITE : Color.GRAY)
