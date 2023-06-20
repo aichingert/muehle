@@ -286,6 +286,11 @@ public class BotController {
 
     private void removePieceBot(int oppo) {
         Position toTake = BruteForce.getInstance().nextTake(game, oppo);
+
+        if (toTake == null) {
+            return;
+        }
+
         game.setGameState(GameState.TAKE);
         game.removePiece(toTake, oppo);
         double[] xy = gameBoard.positionToRaw(toTake);

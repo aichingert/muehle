@@ -38,9 +38,9 @@ public class BruteForce {
 
         switch (this.difficulty) {
             case CRAZY -> next = getNextCrazyMove(game, color);
-            case EASY -> next = null;
-            case MEDIUM -> next = null;
-            case HARD -> next = null;
+            case EASY -> next = getNextCrazyMove(game, color);
+            case MEDIUM -> next = getNextCrazyMove(game, color);
+            case HARD -> next = getNextCrazyMove(game, color);
         }
 
         return next;
@@ -51,9 +51,9 @@ public class BruteForce {
 
         switch (this.difficulty) {
             case CRAZY -> next = getNextCrazyTake(game, color);
-            case EASY -> next = null;
-            case MEDIUM -> next = null;
-            case HARD -> next = null;
+            case EASY -> next = getNextCrazyTake(game, color);
+            case MEDIUM -> next = getNextCrazyTake(game, color);
+            case HARD -> next = getNextCrazyTake(game, color);
         }
 
         return next;
@@ -98,6 +98,11 @@ public class BruteForce {
     private static Position getNextCrazyTake(Mill game, int color) {
         Random index = new Random();
         List<Position> positions = Logic.getTakeablePieces(game, color);
+
+        if (positions.isEmpty()) {
+            return null;
+        }
+
         return positions.get(index.nextInt(positions.size()));
     }
 
