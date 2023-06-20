@@ -180,7 +180,7 @@ public class BotController {
                     removePieceBot(oppo);
                 }
             }
-            case MOVE -> {
+            case MOVE, JUMP -> {
                 game.movePiece(self, nextPosition[0], nextPosition[1]);
                 double[] xy = gameBoard.positionToRaw(nextPosition[0]);
                 gameBoard.getChildren().remove(
