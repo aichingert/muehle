@@ -82,8 +82,14 @@ public class BruteForce {
             }
         }
 
-        Position from = positions.get(index.nextInt(positions.size()));
-        possible = Logic.getMoves(game, from);
+        int nextIndex = index.nextInt(positions.size());
+        Position from = null;
+
+        while (possible == null || possible.isEmpty()) {
+            from = positions.remove(nextIndex);
+            possible = Logic.getMoves(game, from);
+        }
+
         Position to   = possible.get(index.nextInt(possible.size()));
 
         return new Position[]{from, to};

@@ -186,6 +186,7 @@ public class BotController {
                 gameBoard.getChildren().remove(
                         gameBoard.getPieceFromSelectedCoordinates(xy[0], xy[1], self == 1 ? Color.WHITE : Color.GRAY)
                 );
+                gameBoard.drawCircleAtPos(nextPosition[1], self);
 
                 if (Logic.activatesMill(game, null, nextPosition[1])) {
                     removePieceBot(oppo);
@@ -285,7 +286,8 @@ public class BotController {
 
     private void removePieceBot(int oppo) {
         Position toTake = BruteForce.getInstance().nextTake(game, oppo);
-        game.removePiece(toTake, oppo == 1 ? 2 : 1);
+        game.setGameState(GameState.TAKE);
+        game.removePiece(toTake, oppo);
         double[] xy = gameBoard.positionToRaw(toTake);
         gameBoard.getChildren().remove(
                 gameBoard.getPieceFromSelectedCoordinates(xy[0], xy[1], oppo == 1 ? Color.WHITE : Color.GRAY)
